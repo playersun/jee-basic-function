@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .mymetadata
 .checkstyle
 .classpath
@@ -14,3 +15,17 @@
 /src/main/webapp/WEB-INF/classes/*
 /src/main/webapp/userfiles/*
 /target/
+=======
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+>>>>>>> 708c04876165d8d99aedc3e0f8d88603002281bb

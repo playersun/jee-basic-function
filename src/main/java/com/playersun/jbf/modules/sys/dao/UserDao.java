@@ -5,6 +5,7 @@
  */
 package com.playersun.jbf.modules.sys.dao;
 
+import com.playersun.jbf.common.persistence.CrudDao;
 import com.playersun.jbf.common.persistence.annotation.DaoMapping;
 import com.playersun.jbf.modules.sys.entity.User;
 
@@ -16,7 +17,7 @@ import com.playersun.jbf.modules.sys.entity.User;
  */
 @DaoMapping
 //标记Dao让MyBatis认识并和mapping xml对应，一定要加上。
-public interface UserDao {
+public interface UserDao extends CrudDao<User> {
     
     /**
      * 根据用户ID获得用户
@@ -24,8 +25,8 @@ public interface UserDao {
      * @param id
      *            数据库中的主键ID
      * @return User 用户实例
-     */
-    public User findById(long id);
+     
+    public User findById(Long id);*/
     
     /**
      * 根据用户名获得用户

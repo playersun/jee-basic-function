@@ -21,11 +21,10 @@ public class UserTester extends BaseTest {
     public void findByUserName() {
         String un = "admin";
         
-        User u1 = userService.findById(0);
-        
-        User u2 = userService.findByUserName(un);
-        
+        User u1 = userService.findByUserName(un);
         System.out.println(u1.toString());
+        
+        User u2 = userService.findById(0L);
         System.out.println(u2.toString());
     }
 }

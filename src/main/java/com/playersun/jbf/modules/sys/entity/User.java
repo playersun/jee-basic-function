@@ -17,22 +17,24 @@ import com.playersun.jbf.common.entity.BaseEntity;
  */
 public class User extends BaseEntity<User> {
     
+    private static final long serialVersionUID = 4923837214575274721L;
+    
     private String username; //登录用户名
     private String password; //登录密码
-    private int salt; //密码盐，加密密码使用
+    private Integer salt; //密码盐，加密密码使用
     private String name; //真实姓名
     private String workNumber; //员工工号
-    private int sex; //性别。0女、1男
+    private Integer sex; //性别。0女、1男
     private Date birthday; //生日
     private String email; //电子邮件
     private String mobile; //手机号
     private String photo; //相片
     private Date createDate; //创建日期
-    private long updateBy; //被谁更新
+    private Long updateBy; //被谁更新
     private Date updateDate; //更新时间
     private String remarks; //备注
-    private int deleted; //是否已经删除。0表示没有，1表示删除。不删除数据。
-    private int status; //用户状态。0 正常、1 禁止登录
+    private Integer deleted; //是否已经删除。0表示没有，1表示删除。不删除数据。
+    private Integer status; //用户状态。0 正常、1 禁止登录
     
     public String getUsername() {
         return username;
@@ -50,11 +52,11 @@ public class User extends BaseEntity<User> {
         this.password = password;
     }
     
-    public int getSalt() {
+    public Integer getSalt() {
         return salt;
     }
     
-    public void setSalt(int salt) {
+    public void setSalt(Integer salt) {
         this.salt = salt;
     }
     
@@ -74,11 +76,11 @@ public class User extends BaseEntity<User> {
         this.workNumber = workNumber;
     }
     
-    public int getSex() {
+    public Integer getSex() {
         return sex;
     }
     
-    public void setSex(int sex) {
+    public void setSex(Integer sex) {
         this.sex = sex;
     }
     
@@ -122,11 +124,11 @@ public class User extends BaseEntity<User> {
         this.createDate = createDate;
     }
     
-    public long getUpdateBy() {
+    public Long getUpdateBy() {
         return updateBy;
     }
     
-    public void setUpdateBy(long updateBy) {
+    public void setUpdateBy(Long updateBy) {
         this.updateBy = updateBy;
     }
     
@@ -146,19 +148,19 @@ public class User extends BaseEntity<User> {
         this.remarks = remarks;
     }
     
-    public int getDeleted() {
+    public Integer getDeleted() {
         return deleted;
     }
     
-    public void setDeleted(int deleted) {
+    public void setDeleted(Integer deleted) {
         this.deleted = deleted;
     }
     
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
     
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
     

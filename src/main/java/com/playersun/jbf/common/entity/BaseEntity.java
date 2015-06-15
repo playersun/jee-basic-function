@@ -6,13 +6,15 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 public abstract class BaseEntity<T> implements Serializable {
     
-    protected long id;
+    private static final long serialVersionUID = 8907307663203988814L;
     
-    public long getId() {
+    protected Long id;
+    
+    public Long getId() {
         return id;
     }
     
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
     
@@ -28,7 +30,7 @@ public abstract class BaseEntity<T> implements Serializable {
             return false;
         }
         BaseEntity<?> that = (BaseEntity<?>) obj;
-        return 0 == this.getId() ? false : this.getId() == that.getId();
+        return null == this.getId() ? false : this.getId().equals(that.getId());
     }
     
     @Override

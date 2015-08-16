@@ -5,7 +5,7 @@
     <sql id="userColumns">
         a.id, a.username, a.password, a.salt, a.name,
         a.work_number, a.sex, a.birthday, a.email, a.mobile, a.photo,
-        a.create_date, a.update_by,
+        a.create_by, a.create_date, a.update_by,
         a.update_date, a.remarks, a.deleted,
         a.status
     </sql>
@@ -14,7 +14,7 @@
     <select id="findById" resultType="User">
         SELECT
             <include refid="userColumns"/>
-        FROM sys_users a
+        FROM sys_user a
         <!-- <include refid="userJoins"/> -->
         WHERE a.id = #{id}
     </select>
@@ -23,7 +23,7 @@
     <select id="findByUserName" resultType="User">
         SELECT
             <include refid="userColumns"/>
-        FROM sys_users a
+        FROM sys_user a
         <!-- <include refid="userJoins"/> -->
         WHERE a.username = #{userName}
     </select>

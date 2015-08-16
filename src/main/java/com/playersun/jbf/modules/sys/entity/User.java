@@ -7,7 +7,7 @@ package com.playersun.jbf.modules.sys.entity;
 
 import java.util.Date;
 
-import com.playersun.jbf.common.entity.BaseEntity;
+import com.playersun.jbf.common.entity.DataEntity;
 
 /**
  * 用户类
@@ -15,9 +15,7 @@ import com.playersun.jbf.common.entity.BaseEntity;
  * @author PlayerSun
  * @date 2015年6月3日
  */
-public class User extends BaseEntity<User> {
-    
-    private static final long serialVersionUID = 4923837214575274721L;
+public class User extends DataEntity<User> {
     
     private String username; //登录用户名
     private String password; //登录密码
@@ -29,11 +27,7 @@ public class User extends BaseEntity<User> {
     private String email; //电子邮件
     private String mobile; //手机号
     private String photo; //相片
-    private Date createDate; //创建日期
-    private Long updateBy; //被谁更新
-    private Date updateDate; //更新时间
-    private String remarks; //备注
-    private Integer deleted; //是否已经删除。0表示没有，1表示删除。不删除数据。
+    
     private Integer status; //用户状态。0 正常、1 禁止登录
     
     public String getUsername() {
@@ -116,45 +110,7 @@ public class User extends BaseEntity<User> {
         this.photo = photo;
     }
     
-    public Date getCreateDate() {
-        return createDate;
-    }
     
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-    
-    public Long getUpdateBy() {
-        return updateBy;
-    }
-    
-    public void setUpdateBy(Long updateBy) {
-        this.updateBy = updateBy;
-    }
-    
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-    
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
-    
-    public String getRemarks() {
-        return remarks;
-    }
-    
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
-    }
-    
-    public Integer getDeleted() {
-        return deleted;
-    }
-    
-    public void setDeleted(Integer deleted) {
-        this.deleted = deleted;
-    }
     
     public Integer getStatus() {
         return status;

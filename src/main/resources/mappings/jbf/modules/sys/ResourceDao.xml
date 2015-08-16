@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.playersun.jbf.modules.sys.dao.ResourceDao">
+    <sql id="resourceColumns">
+        a.id, a.parent_id, a.parent_ids, a.name,
+        a.identification,
+        a.url, a.icon, a.weight, a.is_show,
+        a.create_by, a.create_date,
+        a.update_by, a.update_date,
+        a.remarks,
+        a.deleted
+    </sql>
+    
+    <!-- 根据ID查询用户 -->
+    <select id="findById" resultType="Resource">
+        SELECT
+            <include refid="resourceColumns"/>
+        FROM sys_resource a
+        WHERE a.id = #{id}
+    </select>
+    
+    <!-- 根据ID查询用户 -->
+    <select id="findList">
+        SELECT
+            <include refid="resourceColumns"/>
+        FROM sys_resource a
+        WHERE a.parent_id = #{parentID} AND a.weight = #{weight}
+    </select>
+
+
+    <insert id="insert">
+        INSERT INTO sys_menu(
+            id,
+            parent_id,
+            parent_ids,
+            name,
+            identification,
+            url,
+            icon,
+            weight,
+            is_show,
+            create_by,
+            create_date,
+            update_by,
+            update_date,
+            remarks,
+            deleted
+        ) VALUES (
+            #{id},
+            #{parent.id},
+            #{parentIds},
+            #{name},
+            #{identification},
+            #{url},
+            #{icon},
+            #{weight},
+            #{isShow},
+            #{createBy.id},
+            #{createDate},
+            #{updateBy.id},
+            #{updateDate},
+            #{remarks},
+            #{deleted}
+        )
+    </insert>
+
+</mapper>

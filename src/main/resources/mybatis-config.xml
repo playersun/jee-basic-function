@@ -39,4 +39,10 @@
         <setting name="jdbcTypeForNull" value="NULL" />
 
     </settings>
+    
+    <!-- 插件配置 -->
+    <plugins>
+        <plugin interceptor="com.playersun.jbf.common.persistence.interceptor.PaginationInterceptor" />
+    </plugins>
+    
 </configuration>

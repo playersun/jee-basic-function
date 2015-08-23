@@ -5,11 +5,9 @@
  */
 package com.playersun.jbf.modules.sys.dao;
 
-import java.util.List;
-import java.util.Map;
-
 import com.playersun.jbf.common.persistence.CrudDao;
 import com.playersun.jbf.common.persistence.annotation.DaoMapping;
+import com.playersun.jbf.common.persistence.pagination.PageMybatis;
 import com.playersun.jbf.common.persistence.pagination.Pageable;
 import com.playersun.jbf.modules.sys.entity.Resource;
 
@@ -20,5 +18,5 @@ import com.playersun.jbf.modules.sys.entity.Resource;
  */
 @DaoMapping
 public interface ResourceDao extends CrudDao<Resource> {
-    List<Resource> findList (Pageable pageable);
+    PageMybatis<Resource> findList (Pageable pageable);
 }

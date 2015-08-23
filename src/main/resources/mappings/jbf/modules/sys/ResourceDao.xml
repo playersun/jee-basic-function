@@ -20,11 +20,11 @@
     </select>
     
     <!-- 根据ID查询用户 -->
-    <select id="findList">
+    <select id="findList" resultType="Resource">
         SELECT
             <include refid="resourceColumns"/>
         FROM sys_resource a
-        WHERE a.parent_id = #{parentID} AND a.weight = #{weight}
+        WHERE a.parent_id = #{parentID}
     </select>
 
 

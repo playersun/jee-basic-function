@@ -5,7 +5,6 @@
  */
 package com.playersun.jbf.common.persistence.pagination;
 
-
 /**
  * 请求分页参数
  * 
@@ -14,12 +13,16 @@ package com.playersun.jbf.common.persistence.pagination;
  */
 public class PageRequest implements Pageable {
     
+    //第几页
     private int pageNumber;
     
+    //每页多少数据
     private int pageSize;
     
+    //查询条件
     private Object condition;
     
+    //排序条件
     public PageRequest(int number, int size) {
         this(number, size, null);
     }
@@ -52,7 +55,7 @@ public class PageRequest implements Pageable {
     
     @Override
     public int getOffset() {
-        return (this.pageNumber * this.pageSize);
+        return (this.pageNumber - 1) * this.pageSize;
     }
     
     @Override

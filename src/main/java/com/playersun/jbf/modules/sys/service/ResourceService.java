@@ -5,12 +5,10 @@
  */
 package com.playersun.jbf.modules.sys.service;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.playersun.jbf.common.persistence.pagination.Page;
+import com.playersun.jbf.common.persistence.pagination.PageMybatis;
 import com.playersun.jbf.common.persistence.pagination.Pageable;
 import com.playersun.jbf.modules.sys.dao.ResourceDao;
 import com.playersun.jbf.modules.sys.entity.Resource;
@@ -28,8 +26,7 @@ public class ResourceService {
         resourceDao.insert(resource);
     }
     
-    public Page<Resource> findPage(Pageable pageable) {
-        resourceDao.findList(pageable);
-        return null;
+    public PageMybatis<Resource> findPage(Pageable pageable) {
+        return resourceDao.findList(pageable);
     }
 }

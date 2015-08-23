@@ -42,7 +42,9 @@
     
     <!-- 插件配置 -->
     <plugins>
-        <plugin interceptor="com.playersun.jbf.common.persistence.interceptor.PaginationInterceptor" />
+        <plugin interceptor="com.playersun.jbf.common.persistence.interceptor.PaginationInterceptor">
+            <property name="dbms" value="MYSQL" />
+        </plugin>
     </plugins>
     
 </configuration>

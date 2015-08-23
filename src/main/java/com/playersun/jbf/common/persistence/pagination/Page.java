@@ -14,6 +14,7 @@ import java.util.List;
  * @author PlayerSun
  * @date Aug 15, 2015
  */
+@Deprecated
 public interface Page<T> extends Iterable<T> {
     
     /**

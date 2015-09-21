@@ -35,7 +35,7 @@ public class ResourceTester extends BaseTest {
         r.setParentID(1L);
         
         Pageable pageable = new PageRequest(3, 3, map);
-        PageMybatis<Resource> p = resourceService.findPage(pageable);
+        PageMybatis<Resource> p = resourceService.findList(pageable);
         System.out.print(p);
     }
 }

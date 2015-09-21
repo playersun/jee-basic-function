@@ -5,6 +5,9 @@
  */
 package com.playersun.jbf.common.persistence;
 
+import com.playersun.jbf.common.persistence.pagination.PageMybatis;
+import com.playersun.jbf.common.persistence.pagination.Pageable;
+
 /**
  * <p>
  * 抽象DAO层基类 提供一些简便方法<br />
@@ -26,11 +29,18 @@ public interface CrudDao<T> extends BaseDao<T> {
     public T findById(Long id);
     
     /**
+     * 根据分页参数，获得分页的结果
+     * @param pageable
+     * @return
+     */
+    public PageMybatis<T> findList(Pageable pageable);
+    
+    /**
      * 保存实体到数据库
      * 
      * @param entity
      */
-    public int insert(T entity);
+    public int save(T entity);
     
     /**
      * 更新实体到数据库

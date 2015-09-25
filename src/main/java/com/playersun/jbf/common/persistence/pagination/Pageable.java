@@ -5,6 +5,8 @@
  */
 package com.playersun.jbf.common.persistence.pagination;
 
+import java.util.List;
+
 /**
  * 抽象的请求分页接口
  * @author PlayerSun
@@ -42,4 +44,10 @@ public interface Pageable {
      * @return
      */
     Object getCondition();
+    
+    /**
+     * 获得排序条件
+     * @return
+     */
+    List<SortField> getSortField();
 }

@@ -18,7 +18,7 @@ public class DerbyDialect implements Dialect {
     }
 
     @Override
-    public String getLimitString(String sql, int offset, int limit) {
+    public String getLimitString(String sql, int offset, int limit, int count) {
         //        return getLimitString(sql,offset,Integer.toString(offset),limit,Integer.toString(limit));
         throw new UnsupportedOperationException("paged queries not supported");
     }

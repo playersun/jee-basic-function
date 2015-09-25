@@ -21,7 +21,7 @@ public class SybaseDialect implements Dialect {
     }
 
     @Override
-    public String getLimitString(String sql, int offset, int limit) {
+    public String getLimitString(String sql, int offset, int limit, int count) {
         return null;
     }
 

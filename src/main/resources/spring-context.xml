@@ -97,6 +97,6 @@
         <property name="filters" value="stat" />
     </bean>
     
-    <import resource="spring-context-shiro.xml"/>
+    <!-- <import resource="spring-context-shiro.xml"/> -->
 
 </beans>

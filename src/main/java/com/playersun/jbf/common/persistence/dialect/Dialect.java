@@ -29,6 +29,6 @@ public interface Dialect {
      * @param limit  每页显示多少纪录条数
      * @return 分页查询的sql
      */
-    public String getLimitString(String sql, int offset, int limit);
+    public String getLimitString(String sql, int offset, int limit, int count);
 
 }

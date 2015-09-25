@@ -20,7 +20,7 @@ public class PostgreSQLDialect implements Dialect {
     }
 
     @Override
-    public String getLimitString(String sql, int offset, int limit) {
+    public String getLimitString(String sql, int offset, int limit, int count) {
         return getLimitString(sql, offset, Integer.toString(offset),
                 Integer.toString(limit));
     }

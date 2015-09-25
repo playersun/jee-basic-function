@@ -6,6 +6,7 @@
 package com.playersun.jbf.common.persistence.interceptor;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
@@ -30,6 +31,8 @@ import com.playersun.jbf.common.persistence.dialect.DialectClient;
 import com.playersun.jbf.common.persistence.pagination.CountHelper;
 import com.playersun.jbf.common.persistence.pagination.PageMybatis;
 import com.playersun.jbf.common.persistence.pagination.Pageable;
+import com.playersun.jbf.common.persistence.pagination.SortField;
+import com.playersun.jbf.common.utils.sql.SqlUtil;
 
 /**
  * 数据库分页插件
@@ -75,19 +78,29 @@ public class PaginationInterceptor implements Interceptor, Serializable {
             
             LOG.debug(String.valueOf(count));
             
+            String newSql = originalSql;
+            List<SortField> sf = pageable.getSortField();
+            if (sf != null && sf.size() > 0) {
+                newSql = buildeNewSql(originalSql, sf.iterator());
+            }
+            
             //分页查询 本地化对象 修改数据库注意修改实现
-            String pageSql = dialect.getLimitString(originalSql,
-                    pageable.getOffset(), pageable.getPageSize());
+            String pageSql = dialect.getLimitString(newSql,
+                    pageable.getOffset(), pageable.getPageSize(), count);
             
             LOG.debug(pageSql);
             
-            args[2] = new RowBounds(RowBounds.NO_ROW_OFFSET, RowBounds.NO_ROW_LIMIT);
+            args[2] = new RowBounds(RowBounds.NO_ROW_OFFSET,
+                    RowBounds.NO_ROW_LIMIT);
             
-            BoundSql newBoundSql = new BoundSql(mappedStatement.getConfiguration(), pageSql, boundSql.getParameterMappings(), pageable.getCondition());
+            BoundSql newBoundSql = new BoundSql(
+                    mappedStatement.getConfiguration(), pageSql,
+                    boundSql.getParameterMappings(), pageable.getCondition());
             
             args[1] = pageable.getCondition();
             
-            MappedStatement newMs = copyFromMappedStatement(mappedStatement, new BoundSqlSqlSource(newBoundSql));
+            MappedStatement newMs = copyFromMappedStatement(mappedStatement,
+                    new BoundSqlSqlSource(newBoundSql));
             
             args[0] = newMs;
             
@@ -102,6 +115,26 @@ public class PaginationInterceptor implements Interceptor, Serializable {
         }
         
         return invocation.proceed();
+    }
+    
+    private String buildeNewSql(String originalSql, Iterator<SortField> iterator) {
+        StringBuffer strBuf = new StringBuffer(originalSql);
+        SortField sf = null;
+        if (iterator.hasNext()) {
+            sf = iterator.next();
+            strBuf.append(SqlUtil.BLANK_STR).append(SqlUtil.ORDER_BY_STR)
+                    .append(SqlUtil.BLANK_STR);
+            strBuf.append(sf.getField()).append(SqlUtil.BLANK_STR)
+                    .append(sf.getDirection());
+            
+            while (iterator.hasNext()) {
+                sf = iterator.next();
+                strBuf.append(SqlUtil.COMMA);
+                strBuf.append(sf.getField()).append(SqlUtil.BLANK_STR)
+                        .append(sf.getDirection());
+            }
+        }
+        return strBuf.toString();
     }
     
     @Override
@@ -145,12 +178,13 @@ public class PaginationInterceptor implements Interceptor, Serializable {
     }
     
     public static class BoundSqlSqlSource implements SqlSource {
+        
         BoundSql boundSql;
-
+        
         public BoundSqlSqlSource(BoundSql boundSql) {
             this.boundSql = boundSql;
         }
-
+        
         public BoundSql getBoundSql(Object parameterObject) {
             return boundSql;
         }

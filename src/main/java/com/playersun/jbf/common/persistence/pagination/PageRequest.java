@@ -5,6 +5,8 @@
  */
 package com.playersun.jbf.common.persistence.pagination;
 
+import java.util.List;
+
 /**
  * 请求分页参数
  * 
@@ -23,11 +25,35 @@ public class PageRequest implements Pageable {
     private Object condition;
     
     //排序条件
+    private List<SortField> sortField;
+    
+    /**
+     * 创建一个分页参数 
+     * @param number    第几页
+     * @param size      每页多少条数据
+     */
     public PageRequest(int number, int size) {
-        this(number, size, null);
+        this(number, size, null, null);
     }
     
+    /**
+     * 创建一个分页参数 
+     * @param number    第几页
+     * @param size      每页多少条数据
+     * @param condition where条件的参数
+     */
     public PageRequest(int number, int size, Object condition) {
+        this(number, size, condition, null);
+    }
+    
+    /**
+     * 创建一个分页参数 
+     * @param number    第几页
+     * @param size      每页多少条数据
+     * @param condition where条件的参数
+     * @param sortField 排队条件
+     */
+    public PageRequest(int number, int size, Object condition, List<SortField> sortField) {
         if (pageNumber < 0) {
             throw new IllegalArgumentException(
                     "Page index must not be less than zero!");
@@ -41,6 +67,7 @@ public class PageRequest implements Pageable {
         this.pageNumber = number;
         this.pageSize = size;
         this.condition = condition;
+        this.sortField = sortField;
     }
     
     @Override
@@ -66,6 +93,11 @@ public class PageRequest implements Pageable {
     @Override
     public Object getCondition() {
         return this.condition;
+    }
+
+    @Override
+    public List<SortField> getSortField() {
+        return this.sortField;
     }
     
 }

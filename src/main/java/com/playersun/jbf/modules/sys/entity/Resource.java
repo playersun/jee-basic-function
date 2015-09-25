@@ -30,7 +30,7 @@ public class Resource extends DataEntity<Resource> {
     public void setParentID(Long parentID) {
         this.parentID = parentID;
     }
-    
+
     public String getParentIDs() {
         return parentIDs;
     }
@@ -85,5 +85,13 @@ public class Resource extends DataEntity<Resource> {
     
     public void setIsShow(Integer isShow) {
         this.isShow = isShow;
+    }
+    
+    @Override
+    public String toString() {
+        return "Resource [parentID=" + parentID + ", parentIDs=" + parentIDs +
+               ", name=" + name + ", identification=" + identification +
+               ", url=" + url + ", icon=" + icon + ", weight=" + weight +
+               ", isShow=" + isShow + "]";
     }
 }

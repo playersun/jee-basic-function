@@ -36,7 +36,7 @@ public class SQLServer2005Dialect implements Dialect {
     }
 
     @Override
-    public String getLimitString(String sql, int offset, int limit) {
+    public String getLimitString(String sql, int offset, int limit, int count) {
         return getLimitString(sql, offset,
                 limit, Integer.toString(limit));
     }

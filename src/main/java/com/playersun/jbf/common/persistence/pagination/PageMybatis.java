@@ -20,7 +20,7 @@ import java.util.List;
  * @date 2015年8月20日
  */
 public class PageMybatis<T> extends ArrayList<T> {
-
+    
     private static final long serialVersionUID = 3658482596114391317L;
     /**
      * 查询到的内容
@@ -39,14 +39,18 @@ public class PageMybatis<T> extends ArrayList<T> {
     
     /**
      * 创建并初始化一个已经分好页的对象.
-     *
-     * @param content  the content
-     * @param pageable the pageable
-     * @param total    the total
+     * 
+     * @param content
+     *            the content
+     * @param pageable
+     *            the pageable
+     * @param total
+     *            the total
      */
-    public PageMybatis(Collection<? extends T> content, Pageable pageable, long total) {
+    public PageMybatis(Collection<? extends T> content, Pageable pageable,
+            long total) {
         super(content);
-
+        
         this.content.addAll(content);
         this.total = total;
         this.pageable = pageable;
@@ -54,14 +58,18 @@ public class PageMybatis<T> extends ArrayList<T> {
     
     /**
      * 第几页
+     * 
      * @return 第几页
      */
     public int getPageNumber() {
-        return pageable == null ? 0 : pageable.getPageNumber();
+        return pageable == null ? 0
+                : pageable.getPageNumber() > getTotalPages() ? getTotalPages()
+                        : pageable.getPageNumber();
     }
     
     /**
      * 每页多少条数据
+     * 
      * @return 每页多少条数据
      */
     public int getPageSize() {
@@ -70,13 +78,13 @@ public class PageMybatis<T> extends ArrayList<T> {
     
     /**
      * 根据数据总数和每页多少数据算出总页数
+     * 
      * @return 总页数
      */
     public int getTotalPages() {
         return getPageSize() == 0 ? 1 : (int) Math.ceil((double) total /
-                                                    (double) getPageSize());
+                                                        (double) getPageSize());
     }
-    
     
     public Iterator<T> iterator() {
         return content.iterator();
@@ -84,6 +92,7 @@ public class PageMybatis<T> extends ArrayList<T> {
     
     /**
      * 是否有上一页
+     * 
      * @return 是否有上一页
      */
     public boolean hasPreviousPage() {
@@ -92,6 +101,7 @@ public class PageMybatis<T> extends ArrayList<T> {
     
     /**
      * 是否是第一页
+     * 
      * @return 是否是第一页
      */
     public boolean isFirstPage() {
@@ -100,6 +110,7 @@ public class PageMybatis<T> extends ArrayList<T> {
     
     /**
      * 是否有下一页
+     * 
      * @return 是否有下一页
      */
     public boolean hasNextPage() {
@@ -108,6 +119,7 @@ public class PageMybatis<T> extends ArrayList<T> {
     
     /**
      * 是否是最后一页
+     * 
      * @return 是否是最后一页
      */
     public boolean isLastPage() {
@@ -116,6 +128,7 @@ public class PageMybatis<T> extends ArrayList<T> {
     
     /**
      * 已经分好也的数据；当前页的数据
+     * 
      * @return 分页数据
      */
     public List<T> getContent() {
@@ -124,6 +137,7 @@ public class PageMybatis<T> extends ArrayList<T> {
     
     /**
      * 是否有实际数据
+     * 
      * @return 是否有实际数据
      */
     public boolean hasContent() {
@@ -133,22 +147,23 @@ public class PageMybatis<T> extends ArrayList<T> {
     @Override
     public String toString() {
         
-        String contentType = "UNKNOWN";
-        
-        if (content.size() > 0) {
-            contentType = content.get(0).getClass().getName();
-        }
+        /*
+         * String contentType = "UNKNOWN"; if (content.size() > 0) { contentType
+         * = content.get(0).getClass().getName(); }
+         */
         
         StringBuffer out = new StringBuffer();
         
-        out.append("Current page : \t").append(this.getPageNumber()).append("\r\n")
-        .append("Page size : \t").append(this.getPageSize()).append("\r\n")
-        .append("Total page : \t").append(this.getTotalPages()).append("\r\n")
-        .append("Total data : \t").append(this.total).append("\r\n")
-        .append("containing data type : \t").append(contentType);
+        out.append("Current page : \t").append(this.getPageNumber())
+                .append("\r\n").append("Page size : \t")
+                .append(this.getPageSize()).append("\r\n")
+                .append("Total page : \t").append(this.getTotalPages())
+                .append("\r\n").append("Total data : \t").append(this.total)
+                .append("\r\n").append("containing data type : \t")
+                .append(content.toString());
         
-//        return String.format("Page %s of %d containing %s instances",
-//                getPageNumber(), getTotalPages(), contentType);
+        //        return String.format("Page %s of %d containing %s instances",
+        //                getPageNumber(), getTotalPages(), contentType);
         return out.toString();
     }
     

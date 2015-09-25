@@ -5,7 +5,9 @@
  */
 package com.playersun.jbf.modules.sys;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
@@ -15,6 +17,8 @@ import com.playersun.jbf.common.BaseTest;
 import com.playersun.jbf.common.persistence.pagination.PageMybatis;
 import com.playersun.jbf.common.persistence.pagination.PageRequest;
 import com.playersun.jbf.common.persistence.pagination.Pageable;
+import com.playersun.jbf.common.persistence.pagination.SortDirection;
+import com.playersun.jbf.common.persistence.pagination.SortField;
 import com.playersun.jbf.modules.sys.entity.Resource;
 import com.playersun.jbf.modules.sys.service.ResourceService;
 
@@ -34,7 +38,10 @@ public class ResourceTester extends BaseTest {
         Resource r = new Resource();
         r.setParentID(1L);
         
-        Pageable pageable = new PageRequest(3, 3, map);
+        List<SortField> list = new ArrayList<SortField>();
+        list.add(new SortField("id", SortDirection.DESC));
+        
+        Pageable pageable = new PageRequest(6, 3, map, list);
         PageMybatis<Resource> p = resourceService.findList(pageable);
         System.out.print(p);
     }

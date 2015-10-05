@@ -27,5 +27,23 @@
         <!-- <include refid="userJoins"/> -->
         WHERE a.username = #{userName}
     </select>
+    
+    <!-- 根据邮箱查询用户 -->
+    <select id="findByEmail" resultType="User">
+        SELECT
+            <include refid="userColumns"/>
+        FROM sys_user a
+        <!-- <include refid="userJoins"/> -->
+        WHERE a.email = #{email}
+    </select>
+    
+    <!-- 根据手机号查询用户 -->
+    <select id="findByMobilePhoneNumber" resultType="User">
+        SELECT
+            <include refid="userColumns"/>
+        FROM sys_user a
+        <!-- <include refid="userJoins"/> -->
+        WHERE a.mobile = #{mobile}
+    </select>
 
 </mapper>

@@ -21,7 +21,7 @@ public class DataEntity<T> extends BaseEntity<T> {
     private Long updateBy; //被谁更新
     private Date updateDate; //更新时间
     private String remarks; //备注
-    private Integer deleted; //是否已经删除。0表示没有，1表示删除。不删除数据。
+    private Boolean deleted; //是否已经删除。0表示没有，1表示删除。不删除数据。
     
     public Long getCreateBy() {
         return createBy;
@@ -63,11 +63,11 @@ public class DataEntity<T> extends BaseEntity<T> {
         this.remarks = remarks;
     }
     
-    public Integer getDeleted() {
+    public Boolean getDeleted() {
         return deleted;
     }
     
-    public void setDeleted(Integer deleted) {
+    public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
 }

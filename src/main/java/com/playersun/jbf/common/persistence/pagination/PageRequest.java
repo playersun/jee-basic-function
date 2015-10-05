@@ -54,12 +54,12 @@ public class PageRequest implements Pageable {
      * @param sortField 排队条件
      */
     public PageRequest(int number, int size, Object condition, List<SortField> sortField) {
-        if (pageNumber < 0) {
+        if (number < 0) {
             throw new IllegalArgumentException(
                     "Page index must not be less than zero!");
         }
         
-        if (pageSize < 0) {
+        if (size < 0) {
             throw new IllegalArgumentException(
                     "Page size must not be less than zero!");
         }

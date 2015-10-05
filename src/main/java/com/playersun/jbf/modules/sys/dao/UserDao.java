@@ -20,15 +20,6 @@ import com.playersun.jbf.modules.sys.entity.User;
 public interface UserDao extends CrudDao<User> {
     
     /**
-     * 根据用户ID获得用户
-     * 
-     * @param id
-     *            数据库中的主键ID
-     * @return User 用户实例
-     
-    public User findById(Long id);*/
-    
-    /**
      * 根据用户名获得用户
      * 
      * @param userName
@@ -36,4 +27,23 @@ public interface UserDao extends CrudDao<User> {
      * @return User 用户实例
      */
     public User findByUserName(String userName);
+    
+    /**
+     * 根据邮箱获得用户
+     * 
+     * @param email
+     *            邮箱
+     * @return
+     */
+    public User findByEmail(String email);
+    
+    /**
+     * 根据手机号获得用户
+     * 
+     * @param mobileNum
+     *            手机号
+     * @return
+     */
+    public User findByMobilePhoneNumber(String mobileNum);
+    
 }

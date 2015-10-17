@@ -11,16 +11,35 @@
         a.deleted
     </sql>
     
-    <!-- 根据ID查询用户 -->
-    <select id="findById" resultType="Resource">
+    <resultMap id="resourceResultMap" type="com.playersun.jbf.modules.sys.entity.Resource">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="parent_id" property="parentID" jdbcType="BIGINT" />
+        <result column="parent_ids" property="parentIDs" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="identification" property="identification" jdbcType="VARCHAR" />
+        <result column="url" property="url" jdbcType="BIGINT" />
+        <result column="icon" property="icon" jdbcType="VARCHAR" />
+        <result column="weight" property="weight" jdbcType="INTEGER" />
+        <result column="is_show" property="isShow" jdbcType="BIT" />
+        
+        <result column="create_by" property="createBy" jdbcType="BIGINT" />
+        <result column="create_date" property="createDate" jdbcType="DATE" />
+        <result column="update_by" property="updateBy" jdbcType="BIGINT" />
+        <result column="update_date" property="updateDate" jdbcType="DATE" />
+        <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+        <result column="deleted" property="deleted" jdbcType="BIT" />
+    </resultMap>
+    
+    <!-- 根据ID查询资源 -->
+    <select id="findById" resultMap="resourceResultMap">
         SELECT
             <include refid="resourceColumns"/>
         FROM sys_resource a
         WHERE a.id = #{id}
     </select>
     
-    <!-- 根据ID查询用户 -->
-    <select id="findList" resultType="Resource">
+    <!-- 查询资源列表 -->
+    <select id="findList" resultMap="resourceResultMap">
         SELECT
             <include refid="resourceColumns"/>
         FROM sys_resource a

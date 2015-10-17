@@ -16,8 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @date Jun 6, 2015
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:spring-context.xml",
-        "classpath:mybatis-config.xml" })
-public class BaseTest extends AbstractTransactionalJUnit4SpringContextTests {
+@ContextConfiguration(locations = { "classpath:spring-context.xml"})
+public class BaseTest{
     
 }

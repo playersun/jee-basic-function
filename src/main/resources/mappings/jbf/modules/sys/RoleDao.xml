@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.playersun.jbf.modules.sys.dao.RoleDao">
+    <sql id="roleColumns">
+        a.id, a.name, a.role, a.description,a.is_show,
+        a.create_by, a.create_date,
+        a.update_by, a.update_date,
+        a.remarks,
+        a.deleted
+    </sql>
+    
+    <resultMap id="roleResultMap" type="com.playersun.jbf.modules.sys.entity.Role">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="role" property="role" jdbcType="VARCHAR" />
+        <result column="description" property="description" jdbcType="VARCHAR" />
+        <result column="is_show" property="isShow" jdbcType="BIT" />
+        
+        <result column="create_by" property="createBy" jdbcType="BIGINT" />
+        <result column="create_date" property="createDate" jdbcType="DATE" />
+        <result column="update_by" property="updateBy" jdbcType="BIGINT" />
+        <result column="update_date" property="updateDate" jdbcType="DATE" />
+        <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+        <result column="deleted" property="deleted" jdbcType="BIT" />
+    </resultMap>
+    
+    <!-- 根据ID查询角色 -->
+    <select id="findById" resultMap="roleResultMap">
+        SELECT
+            <include refid="roleColumns"/>
+        FROM sys_role a
+        WHERE a.id = #{id}
+    </select>
+    
+    <!-- 查询角色列表 -->
+    <select id="findList" resultMap="roleResultMap">
+        SELECT
+            <include refid="roleColumns"/>
+        FROM sys_role a
+    </select>
+    
+    <insert id="insert">
+        INSERT INTO sys_role(
+            name,
+            role,
+            description,
+            is_show,
+            create_by,
+            create_date,
+            update_by,
+            update_date,
+            remarks,
+            deleted
+        ) VALUES (
+            #{name},
+            #{role},
+            #{description},
+            #{isShow},
+            #{createBy},
+            #{createDate},
+            #{updateBy},
+            #{updateDate},
+            #{remarks},
+            #{deleted}
+        )
+    </insert>
+</mapper>

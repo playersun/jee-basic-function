@@ -11,7 +11,7 @@
     </sql>
     
     <!-- 根据ID查询用户 -->
-    <select id="findById" resultType="User">
+    <select id="findById" resultType="com.playersun.jbf.modules.sys.entity.User">
         SELECT
             <include refid="userColumns"/>
         FROM sys_user a
@@ -20,7 +20,7 @@
     </select>
     
     <!-- 根据登录名查询用户 -->
-    <select id="findByUserName" resultType="User">
+    <select id="findByUserName" resultType="com.playersun.jbf.modules.sys.entity.User">
         SELECT
             <include refid="userColumns"/>
         FROM sys_user a
@@ -29,7 +29,7 @@
     </select>
     
     <!-- 根据邮箱查询用户 -->
-    <select id="findByEmail" resultType="User">
+    <select id="findByEmail" resultType="com.playersun.jbf.modules.sys.entity.User">
         SELECT
             <include refid="userColumns"/>
         FROM sys_user a
@@ -38,7 +38,7 @@
     </select>
     
     <!-- 根据手机号查询用户 -->
-    <select id="findByMobilePhoneNumber" resultType="User">
+    <select id="findByMobilePhoneNumber" resultType="com.playersun.jbf.modules.sys.entity.User">
         SELECT
             <include refid="userColumns"/>
         FROM sys_user a

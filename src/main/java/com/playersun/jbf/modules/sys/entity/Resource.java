@@ -9,6 +9,7 @@ import com.playersun.jbf.common.entity.DataEntity;
 
 /**
  * 资源类
+ * 
  * @author PlayerSun
  * @date Aug 9, 2015
  */
@@ -21,7 +22,7 @@ public class Resource extends DataEntity<Resource> {
     private String url;
     private String icon;
     private Integer weight;
-    private Integer isShow;
+    private Boolean isShow;
     
     public Long getParentID() {
         return parentID;
@@ -30,7 +31,7 @@ public class Resource extends DataEntity<Resource> {
     public void setParentID(Long parentID) {
         this.parentID = parentID;
     }
-
+    
     public String getParentIDs() {
         return parentIDs;
     }
@@ -79,11 +80,11 @@ public class Resource extends DataEntity<Resource> {
         this.weight = weight;
     }
     
-    public Integer getIsShow() {
+    public Boolean getIsShow() {
         return isShow;
     }
     
-    public void setIsShow(Integer isShow) {
+    public void setIsShow(Boolean isShow) {
         this.isShow = isShow;
     }
     
@@ -94,4 +95,5 @@ public class Resource extends DataEntity<Resource> {
                ", url=" + url + ", icon=" + icon + ", weight=" + weight +
                ", isShow=" + isShow + "]";
     }
+    
 }

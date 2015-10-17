@@ -49,8 +49,8 @@ public class CrudService<T> {
      *            需要保持的实体
      * @return 返回影响行数
      */
-    public int save(T entity) {
-        return crudDao.save(entity);
+    public int insert(T entity) {
+        return crudDao.insert(entity);
     }
     
     /**

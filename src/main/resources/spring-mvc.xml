@@ -8,11 +8,12 @@
     <description>Spring MVC Configuration</description>
     
      <!-- 加载配置属性文件 -->
-    <context:property-placeholder ignore-unresolvable="true" location="classpath:jbf.properties" />
+    <context:property-placeholder location="classpath:jbf.properties" />
     
     <!-- 使用Annotation自动注册Bean,只扫描@Controller -->
-    <context:component-scan base-package="com.playersun.jbf" use-default-filters="false"><!-- base-package 如果多个，用“,”分隔 -->
+    <context:component-scan base-package="com.playersun.jbf.**.controller" use-default-filters="false"><!-- base-package 如果多个，用“,”分隔 -->
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
     </context:component-scan>
 
 </beans>

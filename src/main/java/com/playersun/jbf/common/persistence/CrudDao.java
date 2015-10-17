@@ -40,7 +40,7 @@ public interface CrudDao<T> extends BaseDao<T> {
      * 
      * @param entity
      */
-    public int save(T entity);
+    public int insert(T entity);
     
     /**
      * 更新实体到数据库

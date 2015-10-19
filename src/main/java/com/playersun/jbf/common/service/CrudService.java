@@ -8,7 +8,7 @@ package com.playersun.jbf.common.service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.playersun.jbf.common.persistence.CrudDao;
-import com.playersun.jbf.common.persistence.pagination.PageMybatis;
+import com.playersun.jbf.common.persistence.mybatis.pagination.PageMybatis;
 import com.playersun.jbf.common.persistence.pagination.Pageable;
 
 /**

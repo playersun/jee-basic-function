@@ -7,7 +7,7 @@ package com.playersun.jbf.common.utils.web;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.playersun.jbf.common.persistence.pagination.PageRequest;
+import com.playersun.jbf.common.persistence.mybatis.pagination.PageRequest;
 
 /**
  * 将httprequest中的参数转换成page

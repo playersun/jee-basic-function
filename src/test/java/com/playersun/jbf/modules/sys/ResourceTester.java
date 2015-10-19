@@ -14,8 +14,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.playersun.jbf.common.BaseTest;
-import com.playersun.jbf.common.persistence.pagination.PageMybatis;
-import com.playersun.jbf.common.persistence.pagination.PageRequest;
+import com.playersun.jbf.common.persistence.mybatis.pagination.PageMybatis;
+import com.playersun.jbf.common.persistence.mybatis.pagination.PageRequest;
 import com.playersun.jbf.common.persistence.pagination.Pageable;
 import com.playersun.jbf.common.persistence.pagination.SortDirection;
 import com.playersun.jbf.common.persistence.pagination.SortField;

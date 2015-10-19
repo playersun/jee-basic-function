@@ -5,7 +5,7 @@
  */
 package com.playersun.jbf.common.persistence;
 
-import com.playersun.jbf.common.persistence.pagination.PageMybatis;
+import com.playersun.jbf.common.persistence.mybatis.pagination.PageMybatis;
 import com.playersun.jbf.common.persistence.pagination.Pageable;
 
 /**

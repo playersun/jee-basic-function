@@ -6,7 +6,7 @@
 package com.playersun.jbf.modules.sys.dao;
 
 import com.playersun.jbf.common.persistence.CrudDao;
-import com.playersun.jbf.common.persistence.annotation.DaoMapping;
+import com.playersun.jbf.common.persistence.mybatis.annotation.DaoMapping;
 import com.playersun.jbf.modules.sys.entity.Role;
 
 @DaoMapping

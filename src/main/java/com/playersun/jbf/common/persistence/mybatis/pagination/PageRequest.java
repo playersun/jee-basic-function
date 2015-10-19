@@ -3,9 +3,12 @@
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
-package com.playersun.jbf.common.persistence.pagination;
+package com.playersun.jbf.common.persistence.mybatis.pagination;
 
 import java.util.List;
+
+import com.playersun.jbf.common.persistence.pagination.Pageable;
+import com.playersun.jbf.common.persistence.pagination.SortField;
 
 /**
  * 请求分页参数

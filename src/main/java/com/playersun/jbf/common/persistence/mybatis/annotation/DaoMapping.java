@@ -3,7 +3,7 @@
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
-package com.playersun.jbf.common.persistence.annotation;
+package com.playersun.jbf.common.persistence.mybatis.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

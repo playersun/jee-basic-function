@@ -5,6 +5,8 @@
  */
 package com.playersun.jbf.modules.sys.entity;
 
+import java.util.List;
+
 import com.playersun.jbf.common.entity.DataEntity;
 
 /**
@@ -35,6 +37,11 @@ public class Role extends DataEntity<Role> {
      */
     private Boolean isShow;
     
+    /**
+     * 用户 组织机构 工作职务关联表
+     */
+    private List<RoleResourcePermission> resourcePermissions;
+
     public String getName() {
         return name;
     }
@@ -66,4 +73,26 @@ public class Role extends DataEntity<Role> {
     public void setIsShow(Boolean show) {
         this.isShow = show;
     }
+
+    public List<RoleResourcePermission> getResourcePermissions() {
+        return resourcePermissions;
+    }
+
+    
+    public void setResourcePermissions(
+            List<RoleResourcePermission> resourcePermissions) {
+        this.resourcePermissions = resourcePermissions;
+    }
+
+    @Override
+    public String toString() {
+        return "Role [name=" + name + ", role=" + role + ", description=" +
+               description + ", isShow=" + isShow + ", resourcePermissions=" +
+               resourcePermissions + ", createBy=" + createBy +
+               ", createDate=" + createDate + ", updateBy=" + updateBy +
+               ", updateDate=" + updateDate + ", remarks=" + remarks +
+               ", deleted=" + deleted + ", id=" + id + "]";
+    }
+
+
 }

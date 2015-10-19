@@ -16,12 +16,12 @@ public class DataEntity<T> extends BaseEntity<T> {
     
     private static final long serialVersionUID = 3237337207884624331L;
     
-    private Long createBy; //谁新建的
-    private Date createDate; //创建日期
-    private Long updateBy; //被谁更新
-    private Date updateDate; //更新时间
-    private String remarks; //备注
-    private Boolean deleted; //是否已经删除。0表示没有，1表示删除。不删除数据。
+    protected Long createBy; //谁新建的
+    protected Date createDate; //创建日期
+    protected Long updateBy; //被谁更新
+    protected Date updateDate; //更新时间
+    protected String remarks; //备注
+    protected Boolean deleted; //是否已经删除。0表示没有，1表示删除。不删除数据。
     
     public Long getCreateBy() {
         return createBy;

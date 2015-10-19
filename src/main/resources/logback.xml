@@ -13,6 +13,12 @@
     <root level="info">
         <appender-ref ref="STDOUT" />
     </root>
+    
+    <logger name="java.sql" level="debug">
+        <appender-ref ref="STDOUT"/>
+    </logger> 
+    
+    <logger name="dao" level="DEBUG"/>
 
     <!-- <logger name="org.apache" level="debug">
         <appender-ref ref="STDOUT"/>

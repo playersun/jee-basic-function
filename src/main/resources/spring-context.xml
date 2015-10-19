@@ -46,6 +46,6 @@
 
     <import resource="spring-context-mybatis.xml" /><!--  -->
     <import resource="spring-context-cache.xml" />
-    <import resource="spring-context-shiro.xml" /><!--  -->
+    <!-- <import resource="spring-context-shiro.xml" /> -->
 
 </beans>

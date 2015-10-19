@@ -26,7 +26,7 @@ public class RoleTester extends BaseTest {
     
     @Test
     public void addRole() {
-        User user = userService.findById(1L);
+        /*User user = userService.findById(1L);
         
         System.out.println(user);
         
@@ -43,14 +43,14 @@ public class RoleTester extends BaseTest {
         role.setUpdateDate(date);
         role.setDeleted(false);
         
-        int i = roleService.insert(role);
+        int i = roleService.insert(role);*/
         
-        System.out.println(i);
+        System.out.println(1);
     }
     
     @Test
     public void getRole(){
-        Role role = roleService.findById(13L);
+        Role role = roleService.findById(1L);
         System.out.println(role);
     }
 }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.playersun.jbf.modules.sys.dao.RoleResourcePermissionDao">
+    <resultMap id="roleResourcePermissionResultMap"
+        type="com.playersun.jbf.modules.sys.entity.RoleResourcePermission">
+        
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <!-- <result column="role_id" property="roleId" jdbcType="BIGINT" /> -->
+        <result column="resource_id" property="resourceId" jdbcType="BIGINT" />
+        <result column="permission_ids" property="permissionIds" jdbcType="VARCHAR" />
+
+        <result column="create_by" property="createBy" jdbcType="BIGINT" />
+        <result column="create_date" property="createDate"
+            jdbcType="DATE" />
+        <result column="update_by" property="updateBy" jdbcType="BIGINT" />
+        <result column="update_date" property="updateDate"
+            jdbcType="DATE" />
+        <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+        <result column="deleted" property="deleted" jdbcType="BIT" />
+        <association property="role"        
+          resultMap="com.playersun.jbf.modules.sys.dao.RoleDao.roleResultMap"/>
+    </resultMap>
+</mapper>

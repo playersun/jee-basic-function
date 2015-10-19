@@ -3,7 +3,7 @@
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
-package com.playersun.jbf.common.persistence.interceptor;
+package com.playersun.jbf.common.persistence.mybatis.interceptor;
 
 import java.io.Serializable;
 import java.util.Iterator;
@@ -28,8 +28,8 @@ import org.apache.ibatis.session.RowBounds;
 import com.playersun.jbf.common.persistence.dialect.DBMS;
 import com.playersun.jbf.common.persistence.dialect.Dialect;
 import com.playersun.jbf.common.persistence.dialect.DialectClient;
-import com.playersun.jbf.common.persistence.pagination.CountHelper;
-import com.playersun.jbf.common.persistence.pagination.PageMybatis;
+import com.playersun.jbf.common.persistence.mybatis.pagination.CountHelper;
+import com.playersun.jbf.common.persistence.mybatis.pagination.PageMybatis;
 import com.playersun.jbf.common.persistence.pagination.Pageable;
 import com.playersun.jbf.common.persistence.pagination.SortField;
 import com.playersun.jbf.common.utils.sql.SqlUtil;

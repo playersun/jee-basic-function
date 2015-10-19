@@ -3,13 +3,15 @@
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
-package com.playersun.jbf.common.persistence.pagination;
+package com.playersun.jbf.common.persistence.mybatis.pagination;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
+import com.playersun.jbf.common.persistence.pagination.Pageable;
 
 /**
  * 查询到的，已经做好分页的数据

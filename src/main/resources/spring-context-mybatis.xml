@@ -69,7 +69,7 @@
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
         <property name="basePackage" value="com.playersun.jbf.**.dao" />
         <property name="annotationClass"
-            value="com.playersun.jbf.common.persistence.annotation.DaoMapping" />
+            value="com.playersun.jbf.common.persistence.mybatis.annotation.DaoMapping" />
     </bean>
 
     <!-- 定义事务 -->

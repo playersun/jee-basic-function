@@ -6,13 +6,13 @@
 package com.playersun.jbf.modules.sys.entity;
 
 /**
- * 
  * @author PlayerSun
  * @date Nov 14, 2015
  */
-public enum UserStatus {
+public enum UserGender {
     
-    normal, //正常状态
-    blocked; //封禁状态"
+    male, //男
+    female, //女
+    other; //其他
     
 }

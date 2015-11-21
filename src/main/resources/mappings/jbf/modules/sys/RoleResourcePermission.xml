@@ -7,7 +7,7 @@
         <id column="id" property="id" jdbcType="BIGINT" />
         <!-- <result column="role_id" property="roleId" jdbcType="BIGINT" /> -->
         <result column="resource_id" property="resourceId" jdbcType="BIGINT" />
-        <result column="permission_ids" property="permissionIds" jdbcType="VARCHAR" />
+        <result column="permission_ids" property="permissionIds" typeHandler="com.playersun.jbf.common.persistence.mybatis.types.Set2Varchar" />
 
         <result column="create_by" property="createBy" jdbcType="BIGINT" />
         <result column="create_date" property="createDate"

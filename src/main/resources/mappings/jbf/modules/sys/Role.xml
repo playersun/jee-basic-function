@@ -58,27 +58,27 @@
 
     <insert id="insert">
         INSERT INTO sys_role(
-        name,
-        role,
-        description,
-        is_show,
-        create_by,
-        create_date,
-        update_by,
-        update_date,
-        remarks,
-        deleted
+            name,
+            role,
+            description,
+            is_show,
+            create_by,
+            create_date,
+            update_by,
+            update_date,
+            remarks,
+            deleted
         ) VALUES (
-        #{name},
-        #{role},
-        #{description},
-        #{isShow},
-        #{createBy},
-        #{createDate},
-        #{updateBy},
-        #{updateDate},
-        #{remarks},
-        #{deleted}
+            #{name},
+            #{role},
+            #{description},
+            #{isShow},
+            #{createBy},
+            #{createDate},
+            #{updateBy},
+            #{updateDate},
+            #{remarks},
+            #{deleted}
         )
     </insert>
 </mapper>

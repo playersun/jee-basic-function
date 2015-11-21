@@ -8,14 +8,14 @@ package com.playersun.jbf.modules.sys.service;
 import org.springframework.stereotype.Service;
 
 import com.playersun.jbf.common.service.CrudService;
-import com.playersun.jbf.modules.sys.entity.Role;
+import com.playersun.jbf.modules.sys.entity.Auth;
+
 
 /**
- * 
  * @author PlayerSun
- * @date Oct 17, 2015
+ * @date Nov 14, 2015
  */
 @Service
-public class RoleService extends CrudService<Role> {
+public class AuthService extends CrudService<Auth> {
     
 }

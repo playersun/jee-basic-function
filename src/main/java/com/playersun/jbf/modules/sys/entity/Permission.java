@@ -33,7 +33,7 @@ public class Permission extends DataEntity<Permission> {
     /**
      * 是否显示 也表示是否可用 为了统一 都使用这个
      */
-    private Boolean show;
+    private Boolean isShow;
     
     public String getName() {
         return name;
@@ -59,12 +59,24 @@ public class Permission extends DataEntity<Permission> {
         this.description = description;
     }
     
-    public Boolean getShow() {
-        return show;
+    public Boolean getIsShow() {
+        return isShow;
     }
     
-    public void setShow(Boolean show) {
-        this.show = show;
+    public void setIsShow(Boolean show) {
+        this.isShow = show;
     }
+
+    @Override
+    public String toString() {
+        return "Permission [name=" + name + ", permission=" + permission +
+               ", description=" + description + ", isShow=" + isShow +
+               ", createBy=" + createBy + ", createDate=" + createDate +
+               ", updateBy=" + updateBy + ", updateDate=" + updateDate +
+               ", remarks=" + remarks + ", deleted=" + deleted + ", id=" + id +
+               "]";
+    }
+    
+    
     
 }

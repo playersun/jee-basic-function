@@ -33,10 +33,6 @@ public class SqlUtil {
     
     public static final String ORDER_BY_STR = "order by";
     
-    public static final String BLANK_STR = " ";
-    
-    public static final String COMMA = ",";
-    
     public static boolean containOrder(String sql) {
         return containRegex(sql, ORDER_REGEX);
     }

@@ -4,14 +4,39 @@
 
     <sql id="userColumns">
         a.id, a.username, a.password, a.salt, a.name,
-        a.work_number, a.sex, a.birthday, a.email, a.mobile, a.photo,
+        a.work_number, a.gender, a.birthday, a.email, a.mobile, a.photo,
         a.create_by, a.create_date, a.update_by,
         a.update_date, a.remarks, a.deleted,
         a.status
     </sql>
     
+    <resultMap id="userResultMap" type="com.playersun.jbf.modules.sys.entity.User">
+        <id column="u_id" property="id" jdbcType="BIGINT" />
+        <result column="username" property="username" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="salt" property="salt" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="work_number" property="workNumber" jdbcType="VARCHAR" />
+        <result column="gender" property="gender"  typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+        <result column="birthday" property="birthday" jdbcType="DATE" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="photo" property="photo" jdbcType="VARCHAR" />
+        <result column="status" property="status"  typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+
+        <result column="create_by" property="createBy" jdbcType="BIGINT" />
+        <result column="create_date" property="createDate"
+            jdbcType="DATE" />
+        <result column="update_by" property="updateBy" jdbcType="BIGINT" />
+        <result column="update_date" property="updateDate"
+            jdbcType="DATE" />
+        <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+        <result column="deleted" property="deleted" jdbcType="BIT" />
+
+    </resultMap>
+    
     <!-- 根据ID查询用户 -->
-    <select id="findById" resultType="com.playersun.jbf.modules.sys.entity.User">
+    <select id="findById" resultMap="userResultMap">
         SELECT
             <include refid="userColumns"/>
         FROM sys_user a
@@ -20,7 +45,7 @@
     </select>
     
     <!-- 根据登录名查询用户 -->
-    <select id="findByUserName" resultType="com.playersun.jbf.modules.sys.entity.User">
+    <select id="findByUserName" resultMap="userResultMap">
         SELECT
             <include refid="userColumns"/>
         FROM sys_user a
@@ -29,7 +54,7 @@
     </select>
     
     <!-- 根据邮箱查询用户 -->
-    <select id="findByEmail" resultType="com.playersun.jbf.modules.sys.entity.User">
+    <select id="findByEmail" resultMap="userResultMap">
         SELECT
             <include refid="userColumns"/>
         FROM sys_user a
@@ -38,7 +63,7 @@
     </select>
     
     <!-- 根据手机号查询用户 -->
-    <select id="findByMobilePhoneNumber" resultType="com.playersun.jbf.modules.sys.entity.User">
+    <select id="findByMobilePhoneNumber" resultMap="userResultMap">
         SELECT
             <include refid="userColumns"/>
         FROM sys_user a

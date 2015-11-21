@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.playersun.jbf.modules.sys.dao.GroupRelationDao">
+    
+    <sql id="groupRelationColumns">
+        a.id as g_id, a.group_id, a.organization_id,  
+        a.user_id, a.start_user_id, a.end_user_id,
+        a.create_by, a.create_date,
+        a.update_by, a.update_date,
+        a.remarks, a.deleted
+    </sql>
+    
+    <resultMap id="groupRelationResultMap" type="com.playersun.jbf.modules.sys.entity.GroupRelation">
+        <id column="g_id" property="id" jdbcType="BIGINT" />
+        <result column="group_id" property="groupId" jdbcType="BIGINT" />
+        <result column="organization_id" property="organizationId" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="start_user_id" property="startUserId" jdbcType="BIGINT" />
+        <result column="end_user_id" property="endUserId" jdbcType="BIGINT" />
+        
+        <result column="create_by" property="createBy" jdbcType="BIGINT" />
+        <result column="create_date" property="createDate"
+            jdbcType="DATE" />
+        <result column="update_by" property="updateBy" jdbcType="BIGINT" />
+        <result column="update_date" property="updateDate"
+            jdbcType="DATE" />
+        <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+        <result column="deleted" property="deleted" jdbcType="BIT" />
+        
+    </resultMap>
+    
+    <!-- 根据ID查询角色 -->
+    <select id="findById" resultMap="groupRelationResultMap">
+        SELECT
+        <include refid="groupRelationColumns" />
+        FROM sys_group_relation a
+        WHERE a.id = #{id}
+    </select>
+
+    <!-- 查询角色列表 -->
+    <select id="findList" resultMap="groupRelationResultMap">
+        SELECT
+        <include refid="groupRelationColumns" />
+        FROM sys_group_relation a
+    </select>
+
+    <insert id="insert">
+        INSERT INTO sys_group_relation
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="groupId != null" >
+                group_id,
+            </if>
+            <if test="organizationId != null" >
+                organization_id,
+            </if>
+            <if test="userId != null" >
+                user_id,
+            </if>
+            <if test="startUserId != null" >
+                start_user_id,
+            </if>
+            <if test="endUserId != null" >
+                end_user_id,
+            </if>
+            <if test="createBy != null" >
+                create_by,
+            </if>
+            <if test="createDate != null" >
+                create_date,
+            </if>
+            <if test="updateBy != null" >
+                update_by,
+            </if>
+            <if test="updateDate != null" >
+                update_date,
+            </if>
+            <if test="remarks != null" >
+                remarks,
+            </if>
+            <if test="deleted != null" >
+                deleted,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id},
+            </if>
+            <if test="groupId != null" >
+                #{groupId},
+            </if>
+            <if test="organizationId != null" >
+                #{organizationId},
+            </if>
+            <if test="userId != null" >
+                #{userId},
+            </if>
+            <if test="startUserId != null" >
+                #{startUserId},
+            </if>
+            <if test="endUserId != null" >
+                #{endUserId},
+            </if>
+            <if test="createBy != null" >
+                #{createBy},
+            </if>
+            <if test="createDate != null" >
+                #{createDate},
+            </if>
+            <if test="updateBy != null" >
+                #{updateBy},
+            </if>
+            <if test="updateDate != null" >
+                #{updateDate},
+            </if>
+            <if test="remarks != null" >
+                #{remarks},
+            </if>
+            <if test="deleted != null" >
+                #{deleted},
+            </if>
+        </trim>
+    </insert>
+</mapper>

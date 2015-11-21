@@ -6,13 +6,10 @@
 package com.playersun.jbf.modules.sys.entity;
 
 /**
- * 
  * @author PlayerSun
- * @date Nov 14, 2015
+ * @date Nov 15, 2015
  */
-public enum UserStatus {
-    
-    normal, //正常状态
-    blocked; //封禁状态"
-    
+public enum GroupType {
+    user, //用户组
+    organization;//组织机构组
 }

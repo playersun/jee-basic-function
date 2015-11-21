@@ -22,6 +22,11 @@ import com.playersun.jbf.common.persistence.pagination.SortField;
 import com.playersun.jbf.modules.sys.entity.Resource;
 import com.playersun.jbf.modules.sys.service.ResourceService;
 
+/**
+ * 
+ * @author PlayerSun
+ * @date Nov 14, 2015
+ */
 public class ResourceTester extends BaseTest {
     
     @Autowired

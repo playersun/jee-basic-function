@@ -8,14 +8,15 @@ package com.playersun.jbf.modules.sys.service;
 import org.springframework.stereotype.Service;
 
 import com.playersun.jbf.common.service.CrudService;
-import com.playersun.jbf.modules.sys.entity.Role;
+import com.playersun.jbf.modules.sys.entity.GroupRelation;
+
 
 /**
  * 
  * @author PlayerSun
- * @date Oct 17, 2015
+ * @date Nov 15, 2015
  */
 @Service
-public class RoleService extends CrudService<Role> {
+public class GroupRelationService extends CrudService<GroupRelation> {
     
 }

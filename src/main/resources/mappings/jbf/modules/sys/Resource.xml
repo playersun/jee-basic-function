@@ -74,9 +74,9 @@
             #{icon},
             #{weight},
             #{isShow},
-            #{createBy.id},
+            #{createBy},
             #{createDate},
-            #{updateBy.id},
+            #{updateBy},
             #{updateDate},
             #{remarks},
             #{deleted}

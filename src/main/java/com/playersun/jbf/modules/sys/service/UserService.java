@@ -98,7 +98,7 @@ public class UserService extends CrudService<User> {
         
         passwordService.validate(user, password);
         
-        if (user.getStatus() == UserStatus.BLOCKED) {
+        if (user.getStatus() == UserStatus.blocked) {
             UserLogUtils.log(username, "loginError", "user is blocked!");
             throw new UserBlockedException("user is blocked!");
         }

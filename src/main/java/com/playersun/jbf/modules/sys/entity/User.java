@@ -38,13 +38,13 @@ public class User extends DataEntity<User> {
     private String salt; //密码盐，加密密码使用
     private String name; //真实姓名
     private String workNumber; //员工工号
-    private Integer sex; //性别。0女、1男
+    private UserGender gender; //性别。female 女、male 男
     private Date birthday; //生日
     private String email; //电子邮件
     private String mobile; //手机号
     private String photo; //相片
     
-    private Integer status; //用户状态。0 正常、1 禁止登录
+    private UserStatus status = UserStatus.normal; //用户状态。normal 正常、blocked 禁止登录
     
     public String getUsername() {
         return username;
@@ -86,12 +86,12 @@ public class User extends DataEntity<User> {
         this.workNumber = workNumber;
     }
     
-    public Integer getSex() {
-        return sex;
+    public UserGender getGender() {
+        return gender;
     }
     
-    public void setSex(Integer sex) {
-        this.sex = sex;
+    public void setGender(UserGender gender) {
+        this.gender = gender;
     }
     
     public Date getBirthday() {
@@ -126,11 +126,11 @@ public class User extends DataEntity<User> {
         this.photo = photo;
     }
     
-    public Integer getStatus() {
+    public UserStatus getStatus() {
         return status;
     }
     
-    public void setStatus(Integer status) {
+    public void setStatus(UserStatus status) {
         this.status = status;
     }
     

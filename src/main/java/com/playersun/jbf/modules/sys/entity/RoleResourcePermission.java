@@ -5,8 +5,15 @@
  */
 package com.playersun.jbf.modules.sys.entity;
 
+import java.util.Set;
+
 import com.playersun.jbf.common.entity.DataEntity;
 
+/**
+ * 角色，资源，权限表
+ * @author PlayerSun
+ * @date Oct 14, 2015
+ */
 public class RoleResourcePermission extends DataEntity<RoleResourcePermission> {
     
     /**
@@ -22,8 +29,7 @@ public class RoleResourcePermission extends DataEntity<RoleResourcePermission> {
     /**
      * 权限id列表 数据库通过字符串存储 逗号分隔
      */
-    
-    private String permissionIds;
+    private Set<Long> permissionIds;
     
     public Role getRole() {
         return role;
@@ -41,11 +47,11 @@ public class RoleResourcePermission extends DataEntity<RoleResourcePermission> {
         this.resourceId = resourceId;
     }
     
-    public String getPermissionIds() {
+    public Set<Long> getPermissionIds() {
         return permissionIds;
     }
     
-    public void setPermissionIds(String permissionIds) {
+    public void setPermissionIds(Set<Long> permissionIds) {
         this.permissionIds = permissionIds;
     }
 

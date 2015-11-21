@@ -10,10 +10,10 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.junit.Test;
 
-import com.playersun.jbf.common.BaseTest;
+import com.playersun.jbf.common.BaseTestWithSpring;
 
 
-public class LoginTester extends BaseTest {
+public class LoginTester extends BaseTestWithSpring {
     
     @Test
     public void login(){

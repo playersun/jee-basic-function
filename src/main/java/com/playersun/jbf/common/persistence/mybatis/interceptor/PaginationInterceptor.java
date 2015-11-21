@@ -25,6 +25,7 @@ import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 
+import com.playersun.jbf.common.constant.Constant;
 import com.playersun.jbf.common.persistence.dialect.DBMS;
 import com.playersun.jbf.common.persistence.dialect.Dialect;
 import com.playersun.jbf.common.persistence.dialect.DialectClient;
@@ -122,15 +123,15 @@ public class PaginationInterceptor implements Interceptor, Serializable {
         SortField sf = null;
         if (iterator.hasNext()) {
             sf = iterator.next();
-            strBuf.append(SqlUtil.BLANK_STR).append(SqlUtil.ORDER_BY_STR)
-                    .append(SqlUtil.BLANK_STR);
-            strBuf.append(sf.getField()).append(SqlUtil.BLANK_STR)
+            strBuf.append(Constant.BLANK_STR).append(SqlUtil.ORDER_BY_STR)
+                    .append(Constant.BLANK_STR);
+            strBuf.append(sf.getField()).append(Constant.BLANK_STR)
                     .append(sf.getDirection());
             
             while (iterator.hasNext()) {
                 sf = iterator.next();
-                strBuf.append(SqlUtil.COMMA);
-                strBuf.append(sf.getField()).append(SqlUtil.BLANK_STR)
+                strBuf.append(Constant.COMMA);
+                strBuf.append(sf.getField()).append(Constant.BLANK_STR)
                         .append(sf.getDirection());
             }
         }

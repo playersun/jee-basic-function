@@ -33,7 +33,7 @@ public class RoleTester extends BaseTest {
         Role role = new Role();
         Date date = new Date();
         
-        role.setName("超级管理员");
+        role.setName("allen.sun");
         role.setRole("admin");
         role.setDescription("拥有所有权限");
         role.setIsShow(true);
@@ -52,5 +52,13 @@ public class RoleTester extends BaseTest {
     public void getRole(){
         Role role = roleService.findById(1L);
         System.out.println(role);
+        
+       /* for(RoleResourcePermission r : role.getResourcePermissions()){
+            if (r.getPermissionIds().size() > 1) {
+                r.getPermissionIds().add(8L);
+            }
+        }
+        
+        roleService.update(role);*/
     }
 }

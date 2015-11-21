@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.playersun.jbf.modules.sys.dao.AuthDao">
+
+    <sql id="authColumns">
+        a.id as a_id, a.organization_id, a.job_id, a.user_id, 
+        a.group_id, a.role_ids, a.type,
+        a.create_by, a.create_date,
+        a.update_by, a.update_date,
+        a.remarks, a.deleted
+    </sql>
+
+    <resultMap id="authResultMap" type="com.playersun.jbf.modules.sys.entity.Auth">
+        <id column="a_id" property="id" jdbcType="BIGINT" />
+        <result column="organization_id" property="organizationId"
+            jdbcType="BIGINT" />
+        <result column="job_id" property="jobId" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="group_id" property="groupId" jdbcType="BIGINT" />
+        <result column="role_ids" property="roleIds" typeHandler="com.playersun.jbf.common.persistence.mybatis.types.Set2Varchar" />
+        <result column="type" property="type" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+
+        <result column="create_by" property="createBy" jdbcType="BIGINT" />
+        <result column="create_date" property="createDate"
+            jdbcType="DATE" />
+        <result column="update_by" property="updateBy" jdbcType="BIGINT" />
+        <result column="update_date" property="updateDate"
+            jdbcType="DATE" />
+        <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+        <result column="deleted" property="deleted" jdbcType="BIT" />
+        
+    </resultMap>
+    
+    <!-- 根据ID查询角色 -->
+    <select id="findById" resultMap="authResultMap">
+        SELECT
+        <include refid="authColumns" />
+        FROM sys_auth a
+        WHERE a.id = #{id}
+    </select>
+
+    <!-- 查询角色列表 -->
+    <select id="findList" resultMap="authResultMap">
+        SELECT
+        <include refid="authColumns" />
+        FROM sys_auth a
+    </select>
+
+    <insert id="insert">
+        INSERT INTO sys_auth(
+            organization_id,
+            job_id,
+            user_id,
+            group_id,
+            role_ids,
+            type,
+            create_by,
+            create_date,
+            update_by,
+            update_date,
+            remarks,
+            deleted
+        ) VALUES (
+            #{organizationId},
+            #{jobId},
+            #{userId},
+            #{groupId},
+            #{roleIds, typeHandler=com.playersun.jbf.common.persistence.mybatis.types.Set2Varchar},
+            #{type, javaType=com.playersun.jbf.modules.sys.entity.AuthType, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+            #{createBy},
+            #{createDate},
+            #{updateBy},
+            #{updateDate},
+            #{remarks},
+            #{deleted}
+        )
+    </insert>
+</mapper>

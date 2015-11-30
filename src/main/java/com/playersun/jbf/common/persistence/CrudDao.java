@@ -5,6 +5,8 @@
  */
 package com.playersun.jbf.common.persistence;
 
+import java.util.List;
+
 import com.playersun.jbf.common.persistence.mybatis.pagination.PageMybatis;
 import com.playersun.jbf.common.persistence.pagination.Pageable;
 
@@ -27,6 +29,13 @@ public interface CrudDao<T> extends BaseDao<T> {
      * @return
      */
     public T findById(Long id);
+    
+    /**
+     * 查询所有
+     * @return
+     
+    public List<T> findAll();
+    */
     
     /**
      * 根据分页参数，获得分页的结果
@@ -56,7 +65,14 @@ public interface CrudDao<T> extends BaseDao<T> {
      * @param id
      * @return
      */
-    public int delete(Long id);
+    public int deleteById(Long id);
+    
+    /**
+     * 批量删除
+     * @param list
+     * @return
+     */
+    public int deleteBatch(List<T> list);
     
     /**
      * 删除数据库中实体

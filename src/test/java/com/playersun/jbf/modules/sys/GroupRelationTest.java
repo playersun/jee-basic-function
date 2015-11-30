@@ -6,6 +6,7 @@
 package com.playersun.jbf.modules.sys;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,16 +32,56 @@ public class GroupRelationTest extends BaseTest {
         
         Date date = new Date();
         
-        groupRelation.setGroupId(1L);
-        groupRelation.setOrganizationId(1L);
-        groupRelation.setUserId(1L);
+        groupRelation.setGroupId(2L);
+        groupRelation.setOrganizationId(2L);
+        groupRelation.setUserId(2L);
         
-        groupRelation.setCreateBy(1L);
+        groupRelation.setCreateBy(2L);
         groupRelation.setCreateDate(date);
-        groupRelation.setUpdateBy(1L);
+        groupRelation.setUpdateBy(2L);
         groupRelation.setUpdateDate(date);
         groupRelation.setDeleted(false);
         
         groupRelationService.insert(groupRelation);
+    }
+    
+    @Test
+    public void getGroupRelationById(){
+        GroupRelation groupRelation = groupRelationService.findById(1L);
+        System.out.println(groupRelation);
+    }
+    
+    @Test
+    public void getGroupRelationList(){
+        List<GroupRelation> list = groupRelationService.findList(null);
+        for (GroupRelation groupRelation : list) {
+            System.out.println(groupRelation);
+        }
+    }
+    
+    @Test
+    public void delete(){
+        GroupRelation groupRelation = groupRelationService.findById(1L);
+        System.out.println(groupRelationService.delete(groupRelation));
+    }
+    
+    @Test
+    public void deleteById(){
+        System.out.println(groupRelationService.deleteById(2L));
+    }
+    
+    @Test
+    public void deleteBatch(){
+        List<GroupRelation> list = groupRelationService.findList(null);
+        
+        System.out.println(groupRelationService.deleteBatch(list));
+    }
+    
+    
+    @Test
+    public void updateAuth() {
+        GroupRelation groupRelation = groupRelationService.findById(2L);
+        groupRelation.setRemarks("test update once again");
+        System.out.println(groupRelationService.update(groupRelation));
     }
 }

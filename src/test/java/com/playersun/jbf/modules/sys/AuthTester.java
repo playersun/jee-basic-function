@@ -6,6 +6,7 @@
 package com.playersun.jbf.modules.sys;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
@@ -36,7 +37,6 @@ public class AuthTester extends BaseTest {
         Set<Long> set = Sets.newHashSet();
         set.add(1L);
         set.add(2L);
-        set.add(3L);
         
         auth.setJobId(1L);
         auth.setGroupId(1L);
@@ -55,8 +55,42 @@ public class AuthTester extends BaseTest {
     }
     
     @Test
-    public void getAuth(){
+    public void getAuthById(){
         Auth auth = authService.findById(1L);
         System.out.println(auth);
+    }
+    
+    @Test
+    public void getAuthList(){
+        List<Auth> list = authService.findList(null);
+        for (Auth auth : list) {
+            System.out.println(auth);
+        }
+    }
+    
+    @Test
+    public void delete(){
+        Auth auth = authService.findById(1L);
+        System.out.println(authService.delete(auth));
+    }
+    
+    @Test
+    public void deleteById(){
+        System.out.println(authService.deleteById(2L));
+    }
+    
+    @Test
+    public void deleteBatch(){
+        List<Auth> list = authService.findList(null);
+        
+        System.out.println(authService.deleteBatch(list));
+    }
+    
+    
+    @Test
+    public void updateAuth() {
+        Auth auth = authService.findById(1L);
+        auth.setRemarks("test update once again");
+        System.out.println(authService.update(auth));
     }
 }

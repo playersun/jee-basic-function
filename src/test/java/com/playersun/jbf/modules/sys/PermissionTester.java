@@ -6,6 +6,7 @@
 package com.playersun.jbf.modules.sys;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +45,42 @@ public class PermissionTester extends BaseTest {
     }
     
     @Test
-    public void getPermission(){
-        Permission permission = persistenceService.findById(1L);
+    public void getPermissionById(){
+        Permission permission = persistenceService.findById(7L);
         System.out.println(permission);
+    }
+    
+    @Test
+    public void getPermissionList(){
+        List<Permission> list = persistenceService.findList(null);
+        for (Permission permission : list) {
+            System.out.println(permission);
+        }
+    }
+    
+    @Test
+    public void delete(){
+        Permission permission = persistenceService.findById(8L);
+        System.out.println(persistenceService.delete(permission));
+    }
+    
+    @Test
+    public void deleteById(){
+        System.out.println(persistenceService.deleteById(9L));
+    }
+    
+    @Test
+    public void deleteBatch(){
+        List<Permission> list = persistenceService.findList(null);
+        
+        System.out.println(persistenceService.deleteBatch(list));
+    }
+    
+    
+    @Test
+    public void updatePermission() {
+        Permission permission = persistenceService.findById(1L);
+        permission.setRemarks("test update once again");
+        System.out.println(persistenceService.update(permission));
     }
 }

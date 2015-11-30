@@ -3,19 +3,21 @@
 <mapper namespace="com.playersun.jbf.modules.sys.dao.GroupDao">
     <sql id="groupColumns">
         a.id as g_id, a.name, a.type,
-        a.default_group, a.is_show, 
+        a.default_group, a.is_show,
         a.create_by, a.create_date,
         a.update_by, a.update_date,
         a.remarks, a.deleted
     </sql>
-    
+
     <resultMap id="groupResultMap" type="com.playersun.jbf.modules.sys.entity.Group">
         <id column="g_id" property="id" jdbcType="BIGINT" />
         <result column="name" property="name" jdbcType="VARCHAR" />
-        <result column="type" property="type"  typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
-        <result column="default_group" property="defaultGroup" jdbcType="BIGINT" />
+        <result column="type" property="type"
+            typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+        <result column="default_group" property="defaultGroup"
+            jdbcType="BIGINT" />
         <result column="is_show" property="isShow" jdbcType="BIT" />
-        
+
         <result column="create_by" property="createBy" jdbcType="BIGINT" />
         <result column="create_date" property="createDate"
             jdbcType="DATE" />
@@ -24,47 +26,156 @@
             jdbcType="DATE" />
         <result column="remarks" property="remarks" jdbcType="VARCHAR" />
         <result column="deleted" property="deleted" jdbcType="BIT" />
-        
+
     </resultMap>
-    
+
     <!-- 根据ID查询角色 -->
     <select id="findById" resultMap="groupResultMap">
         SELECT
         <include refid="groupColumns" />
         FROM sys_group a
-        WHERE a.id = #{id}
+        WHERE a.deleted = 0 and a.id = #{id}
     </select>
 
     <!-- 查询角色列表 -->
     <select id="findList" resultMap="groupResultMap">
         SELECT
         <include refid="groupColumns" />
-        FROM sys_group a
+        FROM sys_group a WHERE a.deleted = 0
     </select>
 
     <insert id="insert">
-        INSERT INTO sys_group(
-            name,
-            type,
-            default_group,
-            is_show,
-            create_by,
-            create_date,
-            update_by,
-            update_date,
-            remarks,
-            deleted
-        ) VALUES (
-            #{name},
-            #{type, javaType=com.playersun.jbf.modules.sys.entity.GroupType, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
-            #{defaultGroup},
-            #{isShow},
-            #{createBy},
-            #{createDate},
-            #{updateBy},
-            #{updateDate},
-            #{remarks},
-            #{deleted}
-        )
+        INSERT INTO sys_group
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                name,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="defaultGroup != null">
+                default_group,
+            </if>
+            <if test="isShow != null">
+                is_show,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="remarks != null">
+                remarks,
+            </if>
+            <if test="deleted != null">
+                deleted,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="type != null">
+                #{type,
+                javaType=com.playersun.jbf.modules.sys.entity.GroupType,
+                typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+            </if>
+            <if test="defaultGroup != null">
+                #{defaultGroup},
+            </if>
+            <if test="isShow != null">
+                #{isShow},
+            </if>
+            <if test="createBy != null">
+                #{createBy},
+            </if>
+            <if test="createDate != null">
+                #{createDate},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate},
+            </if>
+            <if test="remarks != null">
+                #{remarks},
+            </if>
+            <if test="deleted != null">
+                #{deleted},
+            </if>
+        </trim>
     </insert>
+
+    <update id="update">
+        update sys_group
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="type != null">
+                type = #{type,
+                javaType=com.playersun.jbf.modules.sys.entity.GroupType,
+                typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+            </if>
+            <if test="defaultGroup != null">
+                default_group = #{defaultGroup},
+            </if>
+            <if test="isShow != null">
+                is_show = #{isShow},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate},
+            </if>
+            <if test="remarks != null">
+                remarks = #{remarks},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted},
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+
+    <sql id="deleteSql">
+        update sys_group set deleted = 1 where deleted = 0 and id = #{id}
+    </sql>
+    
+    <update id="delete">
+        <include refid="deleteSql" />
+    </update>
+    
+    <update id="deleteById">
+        <include refid="deleteSql" />
+    </update>
+    
+    <update id="deleteBatch" parameterType="java.util.List">
+        update sys_group set deleted = 1 where id in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </update>
+    
+    <update id="deletaAll">
+        update sys_group set deleted = 1 where 1=1
+    </update>
 </mapper>

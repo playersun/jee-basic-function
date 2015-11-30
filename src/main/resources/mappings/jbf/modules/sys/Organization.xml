@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.playersun.jbf.modules.sys.dao.RoleDao">
-    <sql id="roleColumns">
-        a.id as r_id, a.name, a.role, a.description,a.is_show,
+<mapper namespace="com.playersun.jbf.modules.sys.dao.OrganizationDao">
+
+    <sql id="organizationColumns">
+        a.id as o_id, a.name, a.type, a.parent_id, a.parent_ids,
+        a.icon,(select count(1) from sys_organization sub where sub.parent_id = a.id) as has_children,
+        a.weight, a.is_show,
         a.create_by, a.create_date,
-        a.update_by, a.update_date,
-        a.remarks, a.deleted, b.id,
-        b.role_id,
-        b.resource_id, b.permission_ids,
-        b.create_by, b.create_date,
-        b.update_by, b.update_date,
-        b.remarks, b.deleted
+        a.update_by,
+        a.update_date,
+        a.remarks, a.deleted
     </sql>
 
-    <resultMap id="roleResultMap" type="com.playersun.jbf.modules.sys.entity.Role">
-        <id column="r_id" property="id" jdbcType="BIGINT" />
+    <resultMap id="organizationResultMap" type="com.playersun.jbf.modules.sys.entity.Organization">
+        <id column="o_id" property="id" jdbcType="BIGINT" />
         <result column="name" property="name" jdbcType="VARCHAR" />
-        <result column="role" property="role" jdbcType="VARCHAR" />
-        <result column="description" property="description"
+        <result column="type" property="type"  typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+        <result column="parent_id" property="parentId" jdbcType="BIGINT" />
+        <result column="parent_ids" property="parentIds"
             jdbcType="VARCHAR" />
+        <result column="weight" property="weight" jdbcType="INTEGER" />
         <result column="is_show" property="isShow" jdbcType="BIT" />
-
+        <result column="has_children" property="hasChildren" jdbcType="BIT" />
+        
         <result column="create_by" property="createBy" jdbcType="BIGINT" />
         <result column="create_date" property="createDate"
             jdbcType="DATE" />
@@ -29,45 +31,38 @@
             jdbcType="DATE" />
         <result column="remarks" property="remarks" jdbcType="VARCHAR" />
         <result column="deleted" property="deleted" jdbcType="BIT" />
-
-        <collection property="resourcePermissions"
-            resultMap="com.playersun.jbf.modules.sys.dao.RoleResourcePermissionDao.roleResourcePermissionResultMap" />
-        <!-- <collection property="resourcePermissions" ofType="com.playersun.jbf.modules.sys.entity.RoleResourcePermission">
-            <id column="resource_permissionsid" property="id" jdbcType="BIGINT" />
-            <result column="role_id" property="roleId" jdbcType="BIGINT" />
-            <result column="resource_id" property="resourceId" jdbcType="BIGINT" />
-            <result column="permission_ids" property="permissionIds" jdbcType="VARCHAR" />
-        </collection> -->
     </resultMap>
 
-    <!-- 根据ID查询角色 -->
-    <select id="findById" resultMap="roleResultMap">
+    <select id="findById" resultMap="organizationResultMap">
         SELECT
-        <include refid="roleColumns" />
-        FROM jbf.sys_role a left join sys_role_resource_permission b on
-        a.id = b.role_id
-        WHERE a.deleted = 0 and  a.id = #{id}
+        <include refid="organizationColumns" />
+        FROM sys_organization a
+        WHERE a.deleted = 0 and a.id = #{id}
     </select>
-
-    <!-- 查询角色列表 -->
-    <select id="findList" resultMap="roleResultMap">
+    
+    <select id="findList" resultMap="organizationResultMap">
         SELECT
-        <include refid="roleColumns" />
-        FROM jbf.sys_role a left join sys_role_resource_permission b on
-        a.id = b.role_id WHERE a.deleted = 0
+        <include refid="organizationColumns" />
+        FROM sys_organization a WHERE a.deleted = 0
     </select>
     
     <insert id="insert">
-        INSERT INTO sys_role
+        INSERT INTO sys_organization
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="name != null" >
                 name,
             </if>
-            <if test="role != null" >
-                role,
+            <if test="type != null" >
+                type,
             </if>
-            <if test="description != null" >
-                description,
+            <if test="parentId != null" >
+                parent_id,
+            </if>
+            <if test="parentIds != null" >
+                parent_ids,
+            </if>
+            <if test="weight != null" >
+                weight,
             </if>
             <if test="isShow != null" >
                 is_show,
@@ -95,11 +90,17 @@
             <if test="name != null" >
                 #{name},
             </if>
-            <if test="role != null" >
-                #{role},
+            <if test="type != null" >
+                #{type, javaType=com.playersun.jbf.modules.sys.entity.OrganizationType, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
             </if>
-            <if test="description != null" >
-                #{description},
+            <if test="parentId != null" >
+                #{parentId},
+            </if>
+            <if test="parentIds != null" >
+                #{parentIds},
+            </if>
+            <if test="weight != null" >
+                #{weight},
             </if>
             <if test="isShow != null" >
                 #{isShow},
@@ -126,16 +127,22 @@
     </insert>
     
     <update id="update">
-        update sys_role
+        update sys_organization
         <set>
             <if test="name != null">
                 name = #{name},
             </if>
-            <if test="role != null" >
-                role = #{role},
+            <if test="type != null" >
+                type = #{type, javaType=com.playersun.jbf.modules.sys.entity.OrganizationType, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
             </if>
-            <if test="description != null" >
-                description = #{description},
+            <if test="parentId != null">
+                parent_id = #{parentId},
+            </if>
+            <if test="parentIds != null">
+                parent_ids = #{parentIds},
+            </if>
+            <if test="weight != null">
+                weight = #{weight},
             </if>
             <if test="isShow != null">
                 is_show = #{isShow},
@@ -165,7 +172,7 @@
     </update>
     
     <sql id="deleteSql">
-        update sys_role set deleted = 1 where deleted = 0 and id = #{id}
+        update sys_organization set deleted = 1 where deleted = 0 and id = #{id}
     </sql>
     
     <update id="delete">
@@ -177,15 +184,13 @@
     </update>
     
     <update id="deleteBatch" parameterType="java.util.List">
-        update sys_role set deleted = 1 where id in
+        update sys_organization set deleted = 1 where id in
         <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
             #{item.id}
         </foreach>
     </update>
     
     <update id="deletaAll">
-        update sys_role set deleted = 1 where 1=1
+        update sys_organization set deleted = 1 where 1=1
     </update>
-    
-
 </mapper>

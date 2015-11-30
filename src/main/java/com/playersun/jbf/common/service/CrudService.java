@@ -5,6 +5,8 @@
  */
 package com.playersun.jbf.common.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.playersun.jbf.common.persistence.CrudDao;
@@ -31,6 +33,14 @@ public class CrudService<T> {
     public T findById(Long id) {
         return crudDao.findById(id);
     }
+    
+    /**
+     * 查询所有
+     * @return
+     
+    public List<T> findAll(){
+        return crudDao.findAll();
+    }*/
     
     /**
      * 根据分页参数，获得分页的结果
@@ -68,8 +78,17 @@ public class CrudService<T> {
      * @param id
      * @return
      */
-    public int delete(Long id){
-        return crudDao.delete(id);
+    public int deleteById(Long id){
+        return crudDao.deleteById(id);
+    }
+    
+    /**
+     * 批量删除
+     * @param list
+     * @return
+     */
+    public int deleteBatch(List<T> list){
+        return crudDao.deleteBatch(list);
     }
     
     /**

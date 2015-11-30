@@ -17,11 +17,11 @@ public class TestAop {
     
     /**
      * 切入点
-     */
+     
     @Pointcut(
             value = "target(com.playersun.jbf.modules.sys.service.RoleService)")
     private void userServicePointcut() {
-    }
+    }*/
     
     @Pointcut(value = "execution(* com.playersun.jbf..service..*Service.*(..))")
     private void cachePutPointcut() {

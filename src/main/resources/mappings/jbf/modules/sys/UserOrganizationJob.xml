@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.playersun.jbf.modules.sys.dao.UserOrganizationJobDao">
+
+    <sql id="userOrganizationJobColumns">
+        a.id as uoj_id, a.organization_id, a.job_id,
+        a.create_by, a.create_date,
+        a.update_by, a.update_date,
+        a.remarks, a.deleted,
+        b.id, b.username, b.password,
+        b.salt, b.name,
+        b.work_number, b.gender, b.birthday, b.email,
+        b.mobile, b.photo,
+        b.create_by, b.create_date, b.update_by,
+        b.update_date,
+        b.remarks, b.deleted,
+        b.status
+    </sql>
+
+    <resultMap id="userOrganizationJobResultMap"
+        type="com.playersun.jbf.modules.sys.entity.UserOrganizationJob">
+
+        <id column="uoj_id" property="id" jdbcType="BIGINT" />
+        <result column="organization_id" property="organizationId"
+            jdbcType="BIGINT" />
+        <result column="job_id" property="jobId" jdbcType="BIGINT" />
+
+        <result column="create_by" property="createBy" jdbcType="BIGINT" />
+        <result column="create_date" property="createDate"
+            jdbcType="DATE" />
+        <result column="update_by" property="updateBy" jdbcType="BIGINT" />
+        <result column="update_date" property="updateDate"
+            jdbcType="DATE" />
+        <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+        <result column="deleted" property="deleted" jdbcType="BIT" />
+        <association property="user"
+            resultMap="com.playersun.jbf.modules.sys.dao.UserDao.userResultMap" />
+    </resultMap>
+
+    <select id="findList" resultMap="userOrganizationJobResultMap">
+        SELECT
+        <include refid="userOrganizationJobColumns" />
+        from
+        sys_user_organization_job a left join sys_user b
+        on a.user_id = b.id WHERE a.deleted = 0
+    </select>
+</mapper>

@@ -27,7 +27,7 @@ public class PageMybatis<T> extends ArrayList<T> {
     /**
      * 查询到的内容
      */
-    private List<T> content = new ArrayList<T>();
+    //private List<T> content = new ArrayList<T>();
     
     /**
      * 请求分页的参数，包括第几页，每页多少条数据
@@ -38,6 +38,18 @@ public class PageMybatis<T> extends ArrayList<T> {
      * 分页需要的总数据
      */
     private long total;
+    
+    public PageMybatis(){
+        super();
+    }
+    
+    public PageMybatis(int initialCapacity){
+        super(initialCapacity);
+    }
+    
+    public PageMybatis(Collection<? extends T> c){
+        super(c);
+    }
     
     /**
      * 创建并初始化一个已经分好页的对象.
@@ -51,9 +63,9 @@ public class PageMybatis<T> extends ArrayList<T> {
      */
     public PageMybatis(Collection<? extends T> content, Pageable pageable,
             long total) {
-        super(content);
+        //super(content);
         
-        this.content.addAll(content);
+        super.addAll(content);
         this.total = total;
         this.pageable = pageable;
     }
@@ -89,7 +101,7 @@ public class PageMybatis<T> extends ArrayList<T> {
     }
     
     public Iterator<T> iterator() {
-        return content.iterator();
+        return super.iterator();
     }
     
     /**
@@ -134,7 +146,7 @@ public class PageMybatis<T> extends ArrayList<T> {
      * @return 分页数据
      */
     public List<T> getContent() {
-        return Collections.unmodifiableList(content);
+        return Collections.unmodifiableList(this);
     }
     
     /**
@@ -143,7 +155,7 @@ public class PageMybatis<T> extends ArrayList<T> {
      * @return 是否有实际数据
      */
     public boolean hasContent() {
-        return !content.isEmpty();
+        return !super.isEmpty();
     }
     
     @Override
@@ -161,8 +173,7 @@ public class PageMybatis<T> extends ArrayList<T> {
                 .append(this.getPageSize()).append("\r\n")
                 .append("Total page : \t").append(this.getTotalPages())
                 .append("\r\n").append("Total data : \t").append(this.total)
-                .append("\r\n").append("containing data type : \t")
-                .append(content.toString());
+                .append("\r\n").append("containing data type : \t");
         
         //        return String.format("Page %s of %d containing %s instances",
         //                getPageNumber(), getTotalPages(), contentType);
@@ -183,10 +194,9 @@ public class PageMybatis<T> extends ArrayList<T> {
         PageMybatis<?> that = (PageMybatis<?>) obj;
         
         boolean totalEqual = this.total == that.total;
-        boolean contentEqual = this.content.equals(that.content);
         boolean pageableEqual = this.pageable == null ? that.pageable == null
                 : this.pageable.equals(that.pageable);
         
-        return totalEqual && contentEqual && pageableEqual;
+        return totalEqual && pageableEqual;
     }
 }

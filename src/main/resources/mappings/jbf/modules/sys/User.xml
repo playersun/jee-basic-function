@@ -3,26 +3,38 @@
 <mapper namespace="com.playersun.jbf.modules.sys.dao.UserDao">
 
     <sql id="userColumns">
-        a.id, a.username, a.password, a.salt, a.name,
+        a.id as u_id, a.username, a.password, a.salt, a.name,
         a.work_number, a.gender, a.birthday, a.email, a.mobile, a.photo,
         a.create_by, a.create_date, a.update_by,
-        a.update_date, a.remarks, a.deleted,
-        a.status
+        a.update_date,
+        a.remarks, a.deleted,
+        a.status,
+        b.id, b.organization_id, b.job_id,
+        b.create_by, b.create_date,
+        b.update_by, b.update_date,
+        b.remarks, b.deleted
     </sql>
     
+    <sql id="userJoins">
+        LEFT JOIN sys_user_organization_job b ON a.id = b.user_id
+    </sql>
+
     <resultMap id="userResultMap" type="com.playersun.jbf.modules.sys.entity.User">
         <id column="u_id" property="id" jdbcType="BIGINT" />
         <result column="username" property="username" jdbcType="VARCHAR" />
         <result column="password" property="password" jdbcType="VARCHAR" />
         <result column="salt" property="salt" jdbcType="VARCHAR" />
         <result column="name" property="name" jdbcType="VARCHAR" />
-        <result column="work_number" property="workNumber" jdbcType="VARCHAR" />
-        <result column="gender" property="gender"  typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+        <result column="work_number" property="workNumber"
+            jdbcType="VARCHAR" />
+        <result column="gender" property="gender"
+            typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
         <result column="birthday" property="birthday" jdbcType="DATE" />
         <result column="email" property="email" jdbcType="VARCHAR" />
         <result column="mobile" property="mobile" jdbcType="VARCHAR" />
         <result column="photo" property="photo" jdbcType="VARCHAR" />
-        <result column="status" property="status"  typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+        <result column="status" property="status"
+            typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
 
         <result column="create_by" property="createBy" jdbcType="BIGINT" />
         <result column="create_date" property="createDate"
@@ -33,42 +45,45 @@
         <result column="remarks" property="remarks" jdbcType="VARCHAR" />
         <result column="deleted" property="deleted" jdbcType="BIT" />
 
+        <collection property="organizationJobs"
+            resultMap="com.playersun.jbf.modules.sys.dao.UserOrganizationJobDao.userOrganizationJobResultMap" />
+
     </resultMap>
-    
+
     <!-- 根据ID查询用户 -->
     <select id="findById" resultMap="userResultMap">
         SELECT
-            <include refid="userColumns"/>
+        <include refid="userColumns" />
         FROM sys_user a
-        <!-- <include refid="userJoins"/> -->
-        WHERE a.id = #{id}
+        <include refid="userJoins"/>
+        WHERE a.deleted = 0 and a.id = #{id}
     </select>
-    
+
     <!-- 根据登录名查询用户 -->
     <select id="findByUserName" resultMap="userResultMap">
         SELECT
-            <include refid="userColumns"/>
+        <include refid="userColumns" />
         FROM sys_user a
-        <!-- <include refid="userJoins"/> -->
-        WHERE a.username = #{userName}
+        <include refid="userJoins"/>
+        WHERE a.deleted = 0 and a.username = #{userName}
     </select>
-    
+
     <!-- 根据邮箱查询用户 -->
     <select id="findByEmail" resultMap="userResultMap">
         SELECT
-            <include refid="userColumns"/>
+        <include refid="userColumns" />
         FROM sys_user a
         <!-- <include refid="userJoins"/> -->
-        WHERE a.email = #{email}
+        WHERE a.deleted = 0 and a.email = #{email}
     </select>
-    
+
     <!-- 根据手机号查询用户 -->
     <select id="findByMobilePhoneNumber" resultMap="userResultMap">
         SELECT
-            <include refid="userColumns"/>
+        <include refid="userColumns" />
         FROM sys_user a
         <!-- <include refid="userJoins"/> -->
-        WHERE a.mobile = #{mobile}
+        WHERE a.deleted = 0 and a.mobile = #{mobile}
     </select>
 
 </mapper>

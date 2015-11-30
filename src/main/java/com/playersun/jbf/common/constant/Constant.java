@@ -15,4 +15,10 @@ public class Constant {
     public static final String COLON = ":";
     
     public static final String BLANK_STR = " ";
+    
+    public static final String TREE_ROOT_OPEN = "ztree_root_open";
+    
+    public static final String TREE_BRANCH = "ztree_branch";
+    
+    public static final String TREE_LEAF = "ztree_leaf";
 }

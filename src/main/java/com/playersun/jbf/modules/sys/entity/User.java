@@ -5,8 +5,13 @@
  */
 package com.playersun.jbf.modules.sys.entity;
 
+import java.beans.Transient;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.playersun.jbf.common.entity.DataEntity;
 
 /**
@@ -45,6 +50,8 @@ public class User extends DataEntity<User> {
     private String photo; //相片
     
     private UserStatus status = UserStatus.normal; //用户状态。normal 正常、blocked 禁止登录
+    
+    private List<UserOrganizationJob> organizationJobs;
     
     public String getUsername() {
         return username;
@@ -134,4 +141,42 @@ public class User extends DataEntity<User> {
         this.status = status;
     }
     
+    public List<UserOrganizationJob> getOrganizationJobs() {
+        if (organizationJobs == null) {
+            organizationJobs = Lists.newArrayList();
+        }
+        return organizationJobs;
+    }
+
+    public void addOrganizationJob(UserOrganizationJob userOrganizationJob) {
+        userOrganizationJob.setUser(this);
+        getOrganizationJobs().add(userOrganizationJob);
+    }
+
+    public void setOrganizationJobs(List<UserOrganizationJob> organizationJobs) {
+        this.organizationJobs = organizationJobs;
+    }
+
+
+    private transient Map<Long, List<UserOrganizationJob>> organizationJobsMap;
+
+    @Transient
+    public Map<Long, List<UserOrganizationJob>> getDisplayOrganizationJobs() {
+        if (organizationJobsMap != null) {
+            return organizationJobsMap;
+        }
+
+        organizationJobsMap = Maps.newHashMap();
+
+        for (UserOrganizationJob userOrganizationJob : getOrganizationJobs()) {
+            Long organizationId = userOrganizationJob.getOrganizationId();
+            List<UserOrganizationJob> userOrganizationJobList = organizationJobsMap.get(organizationId);
+            if (userOrganizationJobList == null) {
+                userOrganizationJobList = Lists.newArrayList();
+                organizationJobsMap.put(organizationId, userOrganizationJobList);
+            }
+            userOrganizationJobList.add(userOrganizationJob);
+        }
+        return organizationJobsMap;
+    }
 }

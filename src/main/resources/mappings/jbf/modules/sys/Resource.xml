@@ -3,7 +3,7 @@
 <mapper namespace="com.playersun.jbf.modules.sys.dao.ResourceDao">
     <sql id="resourceColumns">
         a.id, a.parent_id, a.parent_ids, a.name,
-        a.identification,
+        a.identification,(select count(1) from sys_resource sub where sub.parent_id = a.id) as has_children,
         a.url, a.icon, a.weight, a.is_show,
         a.create_by, a.create_date,
         a.update_by, a.update_date,
@@ -13,14 +13,15 @@
     
     <resultMap id="resourceResultMap" type="com.playersun.jbf.modules.sys.entity.Resource">
         <id column="id" property="id" jdbcType="BIGINT" />
-        <result column="parent_id" property="parentID" jdbcType="BIGINT" />
-        <result column="parent_ids" property="parentIDs" jdbcType="VARCHAR" />
+        <result column="parent_id" property="parentId" jdbcType="BIGINT" />
+        <result column="parent_ids" property="parentIds" jdbcType="VARCHAR" />
         <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="identification" property="identification" jdbcType="VARCHAR" />
         <result column="url" property="url" jdbcType="BIGINT" />
         <result column="icon" property="icon" jdbcType="VARCHAR" />
         <result column="weight" property="weight" jdbcType="INTEGER" />
         <result column="is_show" property="isShow" jdbcType="BIT" />
+        <result column="has_children" property="hasChildren" jdbcType="BIT" />
         
         <result column="create_by" property="createBy" jdbcType="BIGINT" />
         <result column="create_date" property="createDate" jdbcType="DATE" />
@@ -35,52 +36,171 @@
         SELECT
             <include refid="resourceColumns"/>
         FROM sys_resource a
-        WHERE a.id = #{id}
+        WHERE a.deleted = 0 and a.id = #{id}
     </select>
     
     <!-- 查询资源列表 -->
     <select id="findList" resultMap="resourceResultMap">
         SELECT
             <include refid="resourceColumns"/>
-        FROM sys_resource a
-        WHERE a.parent_id = #{parentID}
+        FROM sys_resource a WHERE a.deleted = 0
     </select>
 
-
     <insert id="insert">
-        INSERT INTO sys_menu(
-            id,
-            parent_id,
-            parent_ids,
-            name,
-            identification,
-            url,
-            icon,
-            weight,
-            is_show,
-            create_by,
-            create_date,
-            update_by,
-            update_date,
-            remarks,
-            deleted
-        ) VALUES (
-            #{id},
-            #{parent.id},
-            #{parentIds},
-            #{name},
-            #{identification},
-            #{url},
-            #{icon},
-            #{weight},
-            #{isShow},
-            #{createBy},
-            #{createDate},
-            #{updateBy},
-            #{updateDate},
-            #{remarks},
-            #{deleted}
-        )
+        INSERT INTO sys_resource
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="name != null" >
+                name,
+            </if>
+            <if test="identification != null" >
+                identification,
+            </if>
+            <if test="url != null" >
+                url,
+            </if>
+            <if test="parentId != null" >
+                parent_id,
+            </if>
+            <if test="parentIds != null" >
+                parent_ids,
+            </if>
+            <if test="weight != null" >
+                weight,
+            </if>
+            <if test="isShow != null" >
+                is_show,
+            </if>
+            <if test="createBy != null" >
+                create_by,
+            </if>
+            <if test="createDate != null" >
+                create_date,
+            </if>
+            <if test="updateBy != null" >
+                update_by,
+            </if>
+            <if test="updateDate != null" >
+                update_date,
+            </if>
+            <if test="remarks != null" >
+                remarks,
+            </if>
+            <if test="deleted != null" >
+                deleted,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="name != null" >
+                #{name},
+            </if>
+            <if test="identification != null" >
+                #{identification},
+            </if>
+            <if test="url != null" >
+                #{url},
+            </if>
+            <if test="parentId != null" >
+                #{parentId},
+            </if>
+            <if test="parentIds != null" >
+                #{parentIds},
+            </if>
+            <if test="weight != null" >
+                #{weight},
+            </if>
+            <if test="isShow != null" >
+                #{isShow},
+            </if>
+            <if test="createBy != null" >
+                #{createBy},
+            </if>
+            <if test="createDate != null" >
+                #{createDate},
+            </if>
+            <if test="updateBy != null" >
+                #{updateBy},
+            </if>
+            <if test="updateDate != null" >
+                #{updateDate},
+            </if>
+            <if test="remarks != null" >
+                #{remarks},
+            </if>
+            <if test="deleted != null" >
+                #{deleted},
+            </if>
+        </trim>
     </insert>
+    
+    <update id="update">
+        update sys_resource
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="identification != null" >
+                identification = #{identification},
+            </if>
+            <if test="url != null" >
+                url = #{url},
+            </if>
+            <if test="parentId != null">
+                parent_id = #{parentId},
+            </if>
+            <if test="parentIds != null">
+                parent_ids = #{parentIds},
+            </if>
+            <if test="weight != null">
+                weight = #{weight},
+            </if>
+            <if test="isShow != null">
+                is_show = #{isShow},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate},
+            </if>
+            <if test="remarks != null">
+                remarks = #{remarks},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted},
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+    
+    <sql id="deleteSql">
+        update sys_resource set deleted = 1 where deleted = 0 and id = #{id}
+    </sql>
+    
+    <update id="delete">
+        <include refid="deleteSql" />
+    </update>
+    
+    <update id="deleteById">
+        <include refid="deleteSql" />
+    </update>
+    
+    <update id="deleteBatch" parameterType="java.util.List">
+        update sys_resource set deleted = 1 where id in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </update>
+    
+    <update id="deletaAll">
+        update sys_resource set deleted = 1 where 1=1
+    </update>
 
 </mapper>

@@ -6,6 +6,7 @@
 package com.playersun.jbf.modules.sys;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +27,14 @@ public class RoleTester extends BaseTest {
     
     @Test
     public void addRole() {
-        /*User user = userService.findById(1L);
+        User user = userService.findById(1L);
         
         System.out.println(user);
         
         Role role = new Role();
         Date date = new Date();
         
-        role.setName("allen.sun");
+        role.setName("shaoqing.mei");
         role.setRole("admin");
         role.setDescription("拥有所有权限");
         role.setIsShow(true);
@@ -43,22 +44,48 @@ public class RoleTester extends BaseTest {
         role.setUpdateDate(date);
         role.setDeleted(false);
         
-        int i = roleService.insert(role);*/
+        int i = roleService.insert(role);
         
-        System.out.println(1);
+        System.out.println(i);
     }
     
     @Test
-    public void getRole(){
+    public void getRoleById(){
         Role role = roleService.findById(1L);
         System.out.println(role);
-        
-       /* for(RoleResourcePermission r : role.getResourcePermissions()){
-            if (r.getPermissionIds().size() > 1) {
-                r.getPermissionIds().add(8L);
-            }
+    }
+    
+    @Test
+    public void getRoleList(){
+        List<Role> list = roleService.findList(null);
+        for(Role role : list){
+            System.out.println(role);
         }
+    }
+    
+    @Test
+    public void delete(){
+        Role role = roleService.findById(3L);
+        System.out.println(roleService.delete(role));
+    }
+    
+    @Test
+    public void deleteById(){
+        System.out.println(roleService.deleteById(2L));
+    }
+    
+    @Test
+    public void deleteBatch(){
+        List<Role> list = roleService.findList(null);
         
-        roleService.update(role);*/
+        System.out.println(roleService.deleteBatch(list));
+    }
+    
+    
+    @Test
+    public void updateRole() {
+        Role role = roleService.findById(1L);
+        role.setRemarks("test update once again");
+        System.out.println(roleService.update(role));
     }
 }

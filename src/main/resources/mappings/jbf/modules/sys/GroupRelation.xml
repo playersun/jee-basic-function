@@ -34,22 +34,19 @@
         SELECT
         <include refid="groupRelationColumns" />
         FROM sys_group_relation a
-        WHERE a.id = #{id}
+        WHERE a.deleted = 0 and a.id = #{id}
     </select>
 
     <!-- 查询角色列表 -->
     <select id="findList" resultMap="groupRelationResultMap">
         SELECT
         <include refid="groupRelationColumns" />
-        FROM sys_group_relation a
+        FROM sys_group_relation a WHERE a.deleted = 0
     </select>
 
     <insert id="insert">
         INSERT INTO sys_group_relation
         <trim prefix="(" suffix=")" suffixOverrides="," >
-            <if test="id != null" >
-                id,
-            </if>
             <if test="groupId != null" >
                 group_id,
             </if>
@@ -85,9 +82,6 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
-            <if test="id != null" >
-                #{id},
-            </if>
             <if test="groupId != null" >
                 #{groupId},
             </if>
@@ -123,4 +117,69 @@
             </if>
         </trim>
     </insert>
+    
+    <update id="update">
+        update sys_group_relation
+        <set>
+            <if test="groupId != null">
+                group_id = #{groupId},
+            </if>
+            <if test="organizationId != null">
+                organization_id = #{organizationId},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="startUserId != null">
+                start_user_id = #{startUserId},
+            </if>
+            <if test="endUserId != null">
+                end_user_id = #{endUserId},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate},
+            </if>
+            <if test="remarks != null">
+                remarks = #{remarks},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted},
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+    
+    <sql id="deleteSql">
+        update sys_group_relation set deleted = 1 where deleted = 0 and id = #{id}
+    </sql>
+    
+    <update id="delete">
+        <include refid="deleteSql" />
+    </update>
+    
+    <update id="deleteById">
+        <include refid="deleteSql" />
+    </update>
+    
+    <update id="deleteBatch" parameterType="java.util.List">
+        update sys_group_relation set deleted = 1 where id in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </update>
+    
+    <update id="deletaAll">
+        update sys_group_relation set deleted = 1 where 1=1
+    </update>
 </mapper>

@@ -6,6 +6,7 @@
 package com.playersun.jbf.modules.sys;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,5 +44,44 @@ public class GroupTest extends BaseTest {
         group.setDeleted(false);
         
         groupService.insert(group);
+    }
+    
+    @Test
+    public void getGroupById(){
+        Group group = groupService.findById(1L);
+        System.out.println(group);
+    }
+    
+    @Test
+    public void updateGroup() {
+        Group group = groupService.findById(2L);
+        group.setName("模块管理员");
+        System.out.println(groupService.update(group));
+    }
+    
+    @Test
+    public void getGroupList(){
+        List<Group> list = groupService.findList(null);
+        for (Group group : list) {
+            System.out.println(group);
+        }
+    }
+    
+    @Test
+    public void delete(){
+        Group group = groupService.findById(1L);
+        System.out.println(groupService.delete(group));
+    }
+    
+    @Test
+    public void deleteById(){
+        System.out.println(groupService.deleteById(2L));
+    }
+    
+    @Test
+    public void deleteBatch(){
+        List<Group> list = groupService.findList(null);
+        
+        System.out.println(groupService.deleteBatch(list));
     }
 }

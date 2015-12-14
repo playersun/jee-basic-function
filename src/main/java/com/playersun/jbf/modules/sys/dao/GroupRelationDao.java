@@ -5,10 +5,14 @@
  */
 package com.playersun.jbf.modules.sys.dao;
 
+import java.util.List;
+import java.util.Set;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.playersun.jbf.common.persistence.CrudDao;
 import com.playersun.jbf.common.persistence.mybatis.annotation.DaoMapping;
 import com.playersun.jbf.modules.sys.entity.GroupRelation;
-
 
 /**
  * @author PlayerSun
@@ -17,4 +21,5 @@ import com.playersun.jbf.modules.sys.entity.GroupRelation;
 @DaoMapping
 public interface GroupRelationDao extends CrudDao<GroupRelation> {
     
+    List<Long> findGroupIds(@Param("userId")Long userId, @Param("organizationIds")Set<Long> organizationIds);
 }

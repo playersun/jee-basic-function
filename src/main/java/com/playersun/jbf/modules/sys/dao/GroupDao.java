@@ -5,6 +5,8 @@
  */
 package com.playersun.jbf.modules.sys.dao;
 
+import java.util.List;
+
 import com.playersun.jbf.common.persistence.CrudDao;
 import com.playersun.jbf.common.persistence.mybatis.annotation.DaoMapping;
 import com.playersun.jbf.modules.sys.entity.Group;
@@ -16,5 +18,5 @@ import com.playersun.jbf.modules.sys.entity.Group;
  */
 @DaoMapping
 public interface GroupDao extends CrudDao<Group> {
-    
+    List<Long> findDefaultGroupIds();
 }

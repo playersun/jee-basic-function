@@ -5,11 +5,14 @@
  */
 package com.playersun.jbf.modules.sys.service;
 
+import java.util.Set;
+
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.Sets;
 import com.playersun.jbf.common.service.CrudService;
+import com.playersun.jbf.modules.sys.dao.GroupRelationDao;
 import com.playersun.jbf.modules.sys.entity.GroupRelation;
-
 
 /**
  * 
@@ -19,4 +22,14 @@ import com.playersun.jbf.modules.sys.entity.GroupRelation;
 @Service
 public class GroupRelationService extends CrudService<GroupRelation> {
     
+    private GroupRelationDao getGroupRelationRepository() {
+        return (GroupRelationDao) crudDao;
+    }
+    
+    public Set<Long> findGroupIds(Long userId, Set<Long> organizationIds) {
+        
+        return Sets.newHashSet(getGroupRelationRepository().findGroupIds(
+                userId, organizationIds));
+        
+    }
 }

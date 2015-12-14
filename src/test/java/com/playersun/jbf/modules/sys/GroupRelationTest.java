@@ -5,12 +5,16 @@
  */
 package com.playersun.jbf.modules.sys;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.common.collect.Sets;
 import com.playersun.jbf.common.BaseTest;
 import com.playersun.jbf.modules.sys.entity.GroupRelation;
 import com.playersun.jbf.modules.sys.service.GroupRelationService;
@@ -57,6 +61,15 @@ public class GroupRelationTest extends BaseTest {
         for (GroupRelation groupRelation : list) {
             System.out.println(groupRelation);
         }
+    }
+    
+    @Test
+    public void findGroupIds(){
+        Set<Long> set = Sets.newHashSet();
+        set.add(1L);
+        set.add(2L);
+        Set<Long> groupIds = groupRelationService.findGroupIds(1L, set);
+        System.out.println(groupIds);
     }
     
     @Test

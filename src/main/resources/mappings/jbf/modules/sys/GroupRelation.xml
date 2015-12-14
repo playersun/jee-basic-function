@@ -43,6 +43,25 @@
         <include refid="groupRelationColumns" />
         FROM sys_group_relation a WHERE a.deleted = 0
     </select>
+    
+    <select id="findGroupIds" resultType="long">
+        SELECT group_id FROM sys_group_relation 
+        <trim prefix="where" suffixOverrides="and" >
+            <![CDATA[deleted = 0 and]]>
+            <trim prefix="(" suffix=")" prefixOverrides="or">
+                <if test="userId != null">
+                    <![CDATA[ user_id = #{userId} OR (start_user_id <= #{userId} and end_user_id >= #{userId}) ]]>
+                </if>
+                <if test="organizationIds != null and organizationIds.size() > 0">
+                    OR organization_id in
+                    <foreach collection="organizationIds" item="tenantId" 
+                        open="(" separator="," close=")">
+                        #{tenantId}
+                    </foreach>
+                </if>
+            </trim>
+        </trim>
+    </select>
 
     <insert id="insert">
         INSERT INTO sys_group_relation

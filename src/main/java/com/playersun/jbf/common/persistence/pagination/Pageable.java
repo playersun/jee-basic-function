@@ -5,14 +5,16 @@
  */
 package com.playersun.jbf.common.persistence.pagination;
 
-import java.util.List;
+import com.playersun.jbf.common.persistence.search.Sort;
 
 /**
  * 抽象的请求分页接口
+ * 
  * @author PlayerSun
  * @date Aug 15, 2015
  */
 public interface Pageable {
+    
     /**
      * 第几页.
      * 
@@ -29,25 +31,29 @@ public interface Pageable {
     
     /**
      * 获得偏移，即PageNumber * PageSize
+     * 
      * @return 偏移量
      */
     int getOffset();
     
     /**
      * 是否有前一页
+     * 
      * @return
      */
     boolean hasPrevious();
     
     /**
      * 获得查询条件
+     * 
      * @return
      */
     Object getCondition();
     
     /**
      * 获得排序条件
+     * 
      * @return
      */
-    List<SortField> getSortField();
+    Sort getSort();
 }

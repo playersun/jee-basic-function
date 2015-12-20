@@ -3,13 +3,14 @@
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
-package com.playersun.jbf.common.persistence.condition;
+package com.playersun.jbf.common.persistence.search;
 
 
 /**
  * 
  * @author PlayerSun
- * @date Dec 13, 2015
+ * @date Dec 20, 2015
  */
-public interface Searchable {
+public interface Condition {
+    
 }

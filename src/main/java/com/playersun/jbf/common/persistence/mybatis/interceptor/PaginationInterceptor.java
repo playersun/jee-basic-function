@@ -6,7 +6,6 @@
 package com.playersun.jbf.common.persistence.mybatis.interceptor;
 
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
@@ -25,15 +24,12 @@ import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 
-import com.playersun.jbf.common.constant.Constant;
 import com.playersun.jbf.common.persistence.dialect.DBMS;
 import com.playersun.jbf.common.persistence.dialect.Dialect;
 import com.playersun.jbf.common.persistence.dialect.DialectClient;
 import com.playersun.jbf.common.persistence.mybatis.pagination.CountHelper;
 import com.playersun.jbf.common.persistence.mybatis.pagination.PageMybatis;
 import com.playersun.jbf.common.persistence.pagination.Pageable;
-import com.playersun.jbf.common.persistence.pagination.SortField;
-import com.playersun.jbf.common.utils.sql.SqlUtil;
 
 /**
  * 数据库分页插件
@@ -80,10 +76,10 @@ public class PaginationInterceptor implements Interceptor, Serializable {
             LOG.debug(String.valueOf(count));
             
             String newSql = originalSql;
-            List<SortField> sf = pageable.getSortField();
+            /*Sort sf = pageable.getSort();
             if (sf != null && sf.size() > 0) {
                 newSql = buildeNewSql(originalSql, sf.iterator());
-            }
+            }*/
             
             //分页查询 本地化对象 修改数据库注意修改实现
             String pageSql = dialect.getLimitString(newSql,
@@ -118,7 +114,7 @@ public class PaginationInterceptor implements Interceptor, Serializable {
         return invocation.proceed();
     }
     
-    private String buildeNewSql(String originalSql, Iterator<SortField> iterator) {
+    /*private String buildeNewSql(String originalSql, Iterator<SortField> iterator) {
         StringBuffer strBuf = new StringBuffer(originalSql);
         SortField sf = null;
         if (iterator.hasNext()) {
@@ -136,7 +132,7 @@ public class PaginationInterceptor implements Interceptor, Serializable {
             }
         }
         return strBuf.toString();
-    }
+    }*/
     
     @Override
     public Object plugin(Object target) {

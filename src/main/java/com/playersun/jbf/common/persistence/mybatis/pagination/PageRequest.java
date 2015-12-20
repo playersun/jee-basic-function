@@ -8,7 +8,7 @@ package com.playersun.jbf.common.persistence.mybatis.pagination;
 import java.util.List;
 
 import com.playersun.jbf.common.persistence.pagination.Pageable;
-import com.playersun.jbf.common.persistence.pagination.SortField;
+import com.playersun.jbf.common.persistence.search.Sort;
 
 /**
  * 请求分页参数
@@ -28,7 +28,7 @@ public class PageRequest implements Pageable {
     private Object condition;
     
     //排序条件
-    private List<SortField> sortField;
+    private Sort sort;
     
     /**
      * 创建一个分页参数 
@@ -54,9 +54,9 @@ public class PageRequest implements Pageable {
      * @param number    第几页
      * @param size      每页多少条数据
      * @param condition where条件的参数
-     * @param sortField 排队条件
+     * @param sort 排队条件
      */
-    public PageRequest(int number, int size, Object condition, List<SortField> sortField) {
+    public PageRequest(int number, int size, Object condition, Sort sort) {
         if (number < 0) {
             throw new IllegalArgumentException(
                     "Page index must not be less than zero!");
@@ -70,7 +70,7 @@ public class PageRequest implements Pageable {
         this.pageNumber = number;
         this.pageSize = size;
         this.condition = condition;
-        this.sortField = sortField;
+        this.sort = sort;
     }
     
     @Override
@@ -99,8 +99,8 @@ public class PageRequest implements Pageable {
     }
 
     @Override
-    public List<SortField> getSortField() {
-        return this.sortField;
+    public Sort getSort() {
+        return this.sort;
     }
     
 }

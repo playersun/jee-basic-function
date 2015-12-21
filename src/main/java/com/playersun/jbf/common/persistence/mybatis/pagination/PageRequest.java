@@ -5,8 +5,6 @@
  */
 package com.playersun.jbf.common.persistence.mybatis.pagination;
 
-import java.util.List;
-
 import com.playersun.jbf.common.persistence.pagination.Pageable;
 import com.playersun.jbf.common.persistence.search.Sort;
 
@@ -24,8 +22,8 @@ public class PageRequest implements Pageable {
     //每页多少数据
     private int pageSize;
     
-    //查询条件
-    private Object condition;
+    /*//查询条件
+    private Object condition;*/
     
     //排序条件
     private Sort sort;
@@ -36,17 +34,7 @@ public class PageRequest implements Pageable {
      * @param size      每页多少条数据
      */
     public PageRequest(int number, int size) {
-        this(number, size, null, null);
-    }
-    
-    /**
-     * 创建一个分页参数 
-     * @param number    第几页
-     * @param size      每页多少条数据
-     * @param condition where条件的参数
-     */
-    public PageRequest(int number, int size, Object condition) {
-        this(number, size, condition, null);
+        this(number, size, null);
     }
     
     /**
@@ -56,7 +44,7 @@ public class PageRequest implements Pageable {
      * @param condition where条件的参数
      * @param sort 排队条件
      */
-    public PageRequest(int number, int size, Object condition, Sort sort) {
+    public PageRequest(int number, int size, Sort sort) {
         if (number < 0) {
             throw new IllegalArgumentException(
                     "Page index must not be less than zero!");
@@ -69,7 +57,6 @@ public class PageRequest implements Pageable {
         
         this.pageNumber = number;
         this.pageSize = size;
-        this.condition = condition;
         this.sort = sort;
     }
     
@@ -93,10 +80,10 @@ public class PageRequest implements Pageable {
         return false;
     }
     
-    @Override
+    /*@Override
     public Object getCondition() {
         return this.condition;
-    }
+    }*/
 
     @Override
     public Sort getSort() {

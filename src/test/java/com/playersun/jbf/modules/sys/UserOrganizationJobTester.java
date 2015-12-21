@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.playersun.jbf.common.BaseTest;
+import com.playersun.jbf.common.persistence.pagination.Pageable;
 import com.playersun.jbf.modules.sys.entity.UserOrganizationJob;
 import com.playersun.jbf.modules.sys.service.UserOrganizationJobService;
 
@@ -26,7 +27,7 @@ public class UserOrganizationJobTester extends BaseTest {
     
     @Test
     public void getList(){
-        List<UserOrganizationJob> list = userOrganizationJobService.findList(null);
+        List<UserOrganizationJob> list = userOrganizationJobService.findList((Pageable)null);
         
         for(UserOrganizationJob uoj : list){
             System.out.println(uoj);

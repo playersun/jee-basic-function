@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.playersun.jbf.common.BaseTest;
+import com.playersun.jbf.common.persistence.pagination.Pageable;
 import com.playersun.jbf.modules.sys.entity.Organization;
 import com.playersun.jbf.modules.sys.entity.OrganizationType;
 import com.playersun.jbf.modules.sys.service.OrganizationService;
@@ -55,7 +56,7 @@ public class OrganizationTester extends BaseTest {
     
     @Test
     public void getOrganizationList(){
-        List<Organization> list = organizationService.findList(null);
+        List<Organization> list = organizationService.findList((Pageable)null);
         for (Organization organization : list) {
             System.out.println(organization);
         }
@@ -74,7 +75,7 @@ public class OrganizationTester extends BaseTest {
     
     @Test
     public void deleteBatch(){
-        List<Organization> list = organizationService.findList(null);
+        List<Organization> list = organizationService.findList((Pageable)null);
         
         System.out.println(organizationService.deleteBatch(list));
     }

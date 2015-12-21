@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.playersun.jbf.common.BaseTest;
+import com.playersun.jbf.common.persistence.pagination.Pageable;
 import com.playersun.jbf.modules.sys.entity.Job;
 import com.playersun.jbf.modules.sys.service.JobService;
 
@@ -54,7 +55,7 @@ public class JobTester extends BaseTest {
     
     @Test
     public void getJobList(){
-        List<Job> list = jobService.findList(null);
+        List<Job> list = jobService.findList((Pageable)null);
         for (Job job : list) {
             System.out.println(job);
         }
@@ -73,7 +74,7 @@ public class JobTester extends BaseTest {
     
     @Test
     public void deleteBatch(){
-        List<Job> list = jobService.findList(null);
+        List<Job> list = jobService.findList((Pageable)null);
         
         System.out.println(jobService.deleteBatch(list));
     }

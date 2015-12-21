@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.playersun.jbf.common.persistence.CrudDao;
 import com.playersun.jbf.common.persistence.mybatis.pagination.PageMybatis;
 import com.playersun.jbf.common.persistence.pagination.Pageable;
+import com.playersun.jbf.common.persistence.search.Searchable;
 
 /**
  * 抽象service，通过CrudDao完成数据库操作
@@ -41,6 +42,10 @@ public class CrudService<T> {
     public List<T> findAll(){
         return crudDao.findAll();
     }*/
+    
+    public List<T> findList(Searchable searchable){
+        return crudDao.findList(searchable);
+    }
     
     /**
      * 根据分页参数，获得分页的结果

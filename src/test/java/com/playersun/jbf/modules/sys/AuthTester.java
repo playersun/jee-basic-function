@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Sets;
 import com.playersun.jbf.common.BaseTest;
+import com.playersun.jbf.common.persistence.pagination.Pageable;
 import com.playersun.jbf.modules.sys.entity.Auth;
 import com.playersun.jbf.modules.sys.entity.AuthType;
 import com.playersun.jbf.modules.sys.service.AuthService;
@@ -62,7 +63,7 @@ public class AuthTester extends BaseTest {
     
     @Test
     public void getAuthList(){
-        List<Auth> list = authService.findList(null);
+        List<Auth> list = authService.findList((Pageable)null);
         for (Auth auth : list) {
             System.out.println(auth);
         }
@@ -81,7 +82,7 @@ public class AuthTester extends BaseTest {
     
     @Test
     public void deleteBatch(){
-        List<Auth> list = authService.findList(null);
+        List<Auth> list = authService.findList((Pageable)null);
         
         System.out.println(authService.deleteBatch(list));
     }

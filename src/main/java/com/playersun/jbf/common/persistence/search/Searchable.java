@@ -116,7 +116,7 @@ public interface Searchable {
 
     public Searchable addSort(final Sort sort);
 
-    public Searchable addSort(final SortDirection direction, String property);
+    public Searchable addSort(final Sort.Direction direction, String property);
 
 
     /**

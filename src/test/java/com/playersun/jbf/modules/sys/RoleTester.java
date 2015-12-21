@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.playersun.jbf.common.BaseTest;
+import com.playersun.jbf.common.persistence.pagination.Pageable;
 import com.playersun.jbf.modules.sys.entity.Role;
 import com.playersun.jbf.modules.sys.entity.User;
 import com.playersun.jbf.modules.sys.service.RoleService;
@@ -57,7 +58,7 @@ public class RoleTester extends BaseTest {
     
     @Test
     public void getRoleList(){
-        List<Role> list = roleService.findList(null);
+        List<Role> list = roleService.findList((Pageable)null);
         for(Role role : list){
             System.out.println(role);
         }
@@ -76,7 +77,7 @@ public class RoleTester extends BaseTest {
     
     @Test
     public void deleteBatch(){
-        List<Role> list = roleService.findList(null);
+        List<Role> list = roleService.findList((Pageable)null);
         
         System.out.println(roleService.deleteBatch(list));
     }

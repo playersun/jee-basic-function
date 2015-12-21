@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.playersun.jbf.common.persistence.mybatis.pagination.PageMybatis;
 import com.playersun.jbf.common.persistence.pagination.Pageable;
+import com.playersun.jbf.common.persistence.search.Searchable;
 
 /**
  * <p>
@@ -36,6 +37,8 @@ public interface CrudDao<T> extends BaseDao<T> {
      
     public List<T> findAll();
     */
+    
+    public List<T> findList(Searchable searchable);
     
     /**
      * 根据分页参数，获得分页的结果

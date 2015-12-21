@@ -14,6 +14,9 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.playersun.jbf.common.BaseTest;
+import com.playersun.jbf.common.persistence.pagination.Pageable;
+import com.playersun.jbf.common.persistence.search.SearchRequest;
+import com.playersun.jbf.common.persistence.search.Searchable;
 import com.playersun.jbf.modules.sys.entity.Resource;
 import com.playersun.jbf.modules.sys.service.ResourceService;
 
@@ -58,7 +61,7 @@ public class ResourceTester extends BaseTest {
     
     @Test
     public void getResourceList(){
-        List<Resource> list = resourceService.findList(null);
+        List<Resource> list = resourceService.findList((Pageable)null);
         for (Resource resource : list) {
             System.out.println(resource);
         }
@@ -77,7 +80,7 @@ public class ResourceTester extends BaseTest {
     
     @Test
     public void deleteBatch(){
-        List<Resource> list = resourceService.findList(null);
+        List<Resource> list = resourceService.findList((Pageable)null);
         
         System.out.println(resourceService.deleteBatch(list));
     }
@@ -88,6 +91,12 @@ public class ResourceTester extends BaseTest {
         Resource resource = resourceService.findById(1L);
         resource.setRemarks("test update once again");
         System.out.println(resourceService.update(resource));
+    }
+    
+    @Test
+    public void findResourceWithSearchable(){
+        Searchable searchable = new SearchRequest();
+        resourceService.findList(searchable);
     }
     
     @Test

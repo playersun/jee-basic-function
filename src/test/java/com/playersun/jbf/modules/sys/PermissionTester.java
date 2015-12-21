@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.playersun.jbf.common.BaseTest;
+import com.playersun.jbf.common.persistence.pagination.Pageable;
 import com.playersun.jbf.modules.sys.entity.Permission;
 import com.playersun.jbf.modules.sys.service.PermissionService;
 
@@ -52,7 +53,7 @@ public class PermissionTester extends BaseTest {
     
     @Test
     public void getPermissionList(){
-        List<Permission> list = persistenceService.findList(null);
+        List<Permission> list = persistenceService.findList((Pageable)null);
         for (Permission permission : list) {
             System.out.println(permission);
         }
@@ -71,7 +72,7 @@ public class PermissionTester extends BaseTest {
     
     @Test
     public void deleteBatch(){
-        List<Permission> list = persistenceService.findList(null);
+        List<Permission> list = persistenceService.findList((Pageable)null);
         
         System.out.println(persistenceService.deleteBatch(list));
     }

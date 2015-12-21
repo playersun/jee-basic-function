@@ -30,6 +30,7 @@ import com.playersun.jbf.common.persistence.dialect.DialectClient;
 import com.playersun.jbf.common.persistence.mybatis.pagination.CountHelper;
 import com.playersun.jbf.common.persistence.mybatis.pagination.PageMybatis;
 import com.playersun.jbf.common.persistence.pagination.Pageable;
+import com.playersun.jbf.common.persistence.search.Searchable;
 
 /**
  * 数据库分页插件
@@ -54,16 +55,27 @@ public class PaginationInterceptor implements Interceptor, Serializable {
     public Object intercept(Invocation invocation) throws Throwable {
         Object[] args = invocation.getArgs();
         
-        //判断是否需要分页
-        if (args[1] != null && args[1] instanceof Pageable) {
-            
-            final Pageable pageable = (Pageable) args[1];
+        boolean hasSearch = false;
+        boolean hasPageable = false;
+        
+        //判断传进来的参数是否是搜索条件
+        final Searchable searchable = (hasSearch = (args[1] != null && args[1] instanceof Searchable)) ? (Searchable) args[1]
+                : null;
+        //获得分页条件
+        final Pageable pageable = hasSearch ? searchable.getPage()
+                : (args[1] != null && args[1] instanceof Pageable) ? (Pageable) args[1]
+                        : null;
+        
+        hasPageable = pageable != null;
+        
+        //判断是否需要拦截处理搜索或分页
+        if (hasSearch || hasPageable) {
             
             final MappedStatement mappedStatement = (MappedStatement) args[0];
             
             //获得分页对象中的查询条件
             //然后从MappedStatemnt中获得boundSql
-            BoundSql boundSql = mappedStatement.getBoundSql(pageable);
+            /*BoundSql boundSql = mappedStatement.getBoundSql(pageable);
             
             //原始的sql语句
             String originalSql = boundSql.getSql().trim();
@@ -76,10 +88,10 @@ public class PaginationInterceptor implements Interceptor, Serializable {
             LOG.debug(String.valueOf(count));
             
             String newSql = originalSql;
-            /*Sort sf = pageable.getSort();
-            if (sf != null && sf.size() > 0) {
-                newSql = buildeNewSql(originalSql, sf.iterator());
-            }*/
+            
+             * Sort sf = pageable.getSort(); if (sf != null && sf.size() > 0) {
+             * newSql = buildeNewSql(originalSql, sf.iterator()); }
+             
             
             //分页查询 本地化对象 修改数据库注意修改实现
             String pageSql = dialect.getLimitString(newSql,
@@ -108,31 +120,24 @@ public class PaginationInterceptor implements Interceptor, Serializable {
                 p = new PageMybatis((List<?>) o, pageable, count);
             }
             
-            return p;
+            return p;*/
         }
         
         return invocation.proceed();
     }
     
-    /*private String buildeNewSql(String originalSql, Iterator<SortField> iterator) {
-        StringBuffer strBuf = new StringBuffer(originalSql);
-        SortField sf = null;
-        if (iterator.hasNext()) {
-            sf = iterator.next();
-            strBuf.append(Constant.BLANK_STR).append(SqlUtil.ORDER_BY_STR)
-                    .append(Constant.BLANK_STR);
-            strBuf.append(sf.getField()).append(Constant.BLANK_STR)
-                    .append(sf.getDirection());
-            
-            while (iterator.hasNext()) {
-                sf = iterator.next();
-                strBuf.append(Constant.COMMA);
-                strBuf.append(sf.getField()).append(Constant.BLANK_STR)
-                        .append(sf.getDirection());
-            }
-        }
-        return strBuf.toString();
-    }*/
+    /*
+     * private String buildeNewSql(String originalSql, Iterator<SortField>
+     * iterator) { StringBuffer strBuf = new StringBuffer(originalSql);
+     * SortField sf = null; if (iterator.hasNext()) { sf = iterator.next();
+     * strBuf.append(Constant.BLANK_STR).append(SqlUtil.ORDER_BY_STR)
+     * .append(Constant.BLANK_STR);
+     * strBuf.append(sf.getField()).append(Constant.BLANK_STR)
+     * .append(sf.getDirection()); while (iterator.hasNext()) { sf =
+     * iterator.next(); strBuf.append(Constant.COMMA);
+     * strBuf.append(sf.getField()).append(Constant.BLANK_STR)
+     * .append(sf.getDirection()); } } return strBuf.toString(); }
+     */
     
     @Override
     public Object plugin(Object target) {

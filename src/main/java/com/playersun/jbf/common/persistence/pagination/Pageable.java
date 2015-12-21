@@ -44,13 +44,6 @@ public interface Pageable {
     boolean hasPrevious();
     
     /**
-     * 获得查询条件
-     * 
-     * @return
-     */
-    Object getCondition();
-    
-    /**
      * 获得排序条件
      * 
      * @return

@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.playersun.jbf.common.BaseTest;
+import com.playersun.jbf.common.persistence.pagination.Pageable;
 import com.playersun.jbf.modules.sys.entity.Group;
 import com.playersun.jbf.modules.sys.entity.GroupType;
 import com.playersun.jbf.modules.sys.service.GroupService;
@@ -61,7 +62,7 @@ public class GroupTest extends BaseTest {
     
     @Test
     public void getGroupList(){
-        List<Group> list = groupService.findList(null);
+        List<Group> list = groupService.findList((Pageable)null);
         for (Group group : list) {
             System.out.println(group);
         }
@@ -80,7 +81,7 @@ public class GroupTest extends BaseTest {
     
     @Test
     public void deleteBatch(){
-        List<Group> list = groupService.findList(null);
+        List<Group> list = groupService.findList((Pageable)null);
         
         System.out.println(groupService.deleteBatch(list));
     }

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Sets;
 import com.playersun.jbf.common.BaseTest;
+import com.playersun.jbf.common.persistence.pagination.Pageable;
 import com.playersun.jbf.modules.sys.entity.GroupRelation;
 import com.playersun.jbf.modules.sys.service.GroupRelationService;
 
@@ -57,7 +58,7 @@ public class GroupRelationTest extends BaseTest {
     
     @Test
     public void getGroupRelationList(){
-        List<GroupRelation> list = groupRelationService.findList(null);
+        List<GroupRelation> list = groupRelationService.findList((Pageable)null);
         for (GroupRelation groupRelation : list) {
             System.out.println(groupRelation);
         }
@@ -85,7 +86,7 @@ public class GroupRelationTest extends BaseTest {
     
     @Test
     public void deleteBatch(){
-        List<GroupRelation> list = groupRelationService.findList(null);
+        List<GroupRelation> list = groupRelationService.findList((Pageable)null);
         
         System.out.println(groupRelationService.deleteBatch(list));
     }

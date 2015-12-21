@@ -112,7 +112,7 @@ public class SearchRequest implements Searchable {
     }
 
     @Override
-    public Searchable addSort(SortDirection direction, String property) {
+    public Searchable addSort(Sort.Direction direction, String property) {
         // TODO Auto-generated method stub
         return null;
     }

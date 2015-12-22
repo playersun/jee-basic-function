@@ -7,6 +7,8 @@ package com.playersun.jbf.modules.sys.entity;
 
 import com.playersun.jbf.common.constant.Constant;
 import com.playersun.jbf.common.entity.DataEntity;
+import com.playersun.jbf.common.persistence.mybatis.annotation.Column;
+import com.playersun.jbf.common.persistence.mybatis.annotation.Table;
 import com.playersun.jbf.common.plugin.entity.Treeable;
 
 /**
@@ -15,16 +17,29 @@ import com.playersun.jbf.common.plugin.entity.Treeable;
  * @author PlayerSun
  * @date Aug 9, 2015
  */
+@Table(name = "sys_resource")
 public class Resource extends DataEntity<Resource> implements Treeable {
     
+    @Column(name = "parent_id")
     private Long parentId;
+    
+    @Column(name = "parent_ids")
     private String parentIds;
+    
     private String name;
+    
     private String identification;
+    
     private String url;
+    
     private String icon;
+    
     private Integer weight;
+    
+    @Column(name = "is_show")
     private Boolean isShow;
+    
+    @Column(name = "has_children")
     private boolean hasChildren;
     
     public Long getParentId() {
@@ -98,17 +113,17 @@ public class Resource extends DataEntity<Resource> implements Treeable {
                ", url=" + url + ", icon=" + icon + ", weight=" + weight +
                ", isShow=" + isShow + "]";
     }
-
+    
     @Override
     public String getSeparator() {
         return Constant.COMMA;
     }
-
+    
     @Override
     public String makeSelfAsNewParentIds() {
         return getParentIds() + getId() + getSeparator();
     }
-
+    
     @Override
     public boolean isRoot() {
         if (getParentId() != null && getParentId() == 0) {
@@ -116,7 +131,7 @@ public class Resource extends DataEntity<Resource> implements Treeable {
         }
         return false;
     }
-
+    
     @Override
     public boolean isLeaf() {
         if (isRoot()) {
@@ -125,10 +140,10 @@ public class Resource extends DataEntity<Resource> implements Treeable {
         if (isHasChildren()) {
             return false;
         }
-
+        
         return true;
     }
-
+    
     @Override
     public boolean isHasChildren() {
         return hasChildren;
@@ -137,17 +152,17 @@ public class Resource extends DataEntity<Resource> implements Treeable {
     public void setHasChildren(boolean hasChildren) {
         this.hasChildren = hasChildren;
     }
-
+    
     @Override
     public String getRootDefaultIcon() {
         return Constant.TREE_ROOT_OPEN;
     }
-
+    
     @Override
     public String getBranchDefaultIcon() {
         return Constant.TREE_BRANCH;
     }
-
+    
     @Override
     public String getLeafDefaultIcon() {
         return Constant.TREE_LEAF;

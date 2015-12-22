@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Sets;
+import com.playersun.jbf.common.persistence.pagination.Pageable;
 import com.playersun.jbf.common.service.CrudService;
 import com.playersun.jbf.modules.sys.dao.GroupDao;
 import com.playersun.jbf.modules.sys.entity.Group;
@@ -43,7 +44,7 @@ public class GroupService extends CrudService<Group> {
 
 
         //TODO 如果分组数量很多 建议此处查询时直接带着是否可用的标识去查
-        for (Group group : this.findList(null)) {
+        for (Group group : this.findList((Pageable)null)) {
             if (Boolean.FALSE.equals(group.getIsShow())) {
                 groupIds.remove(group.getId());
             }

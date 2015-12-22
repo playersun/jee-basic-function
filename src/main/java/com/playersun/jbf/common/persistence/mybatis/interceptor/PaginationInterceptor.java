@@ -6,7 +6,6 @@
 package com.playersun.jbf.common.persistence.mybatis.interceptor;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
@@ -21,6 +20,11 @@ import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Plugin;
 import org.apache.ibatis.plugin.Signature;
+import org.apache.ibatis.reflection.MetaObject;
+import org.apache.ibatis.reflection.factory.DefaultObjectFactory;
+import org.apache.ibatis.reflection.factory.ObjectFactory;
+import org.apache.ibatis.reflection.wrapper.DefaultObjectWrapperFactory;
+import org.apache.ibatis.reflection.wrapper.ObjectWrapperFactory;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 
@@ -28,7 +32,6 @@ import com.playersun.jbf.common.persistence.dialect.DBMS;
 import com.playersun.jbf.common.persistence.dialect.Dialect;
 import com.playersun.jbf.common.persistence.dialect.DialectClient;
 import com.playersun.jbf.common.persistence.mybatis.pagination.CountHelper;
-import com.playersun.jbf.common.persistence.mybatis.pagination.PageMybatis;
 import com.playersun.jbf.common.persistence.pagination.Pageable;
 import com.playersun.jbf.common.persistence.search.Searchable;
 
@@ -49,6 +52,9 @@ public class PaginationInterceptor implements Interceptor, Serializable {
     protected Dialect dialect;
     
     private static final Log LOG = LogFactory.getLog(CountHelper.class);
+    
+    private static final ObjectFactory DEFAULT_OBJECT_FACTORY = new DefaultObjectFactory();
+    private static final ObjectWrapperFactory DEFAULT_OBJECT_WRAPPER_FACTORY = new DefaultObjectWrapperFactory();
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
@@ -73,54 +79,49 @@ public class PaginationInterceptor implements Interceptor, Serializable {
             
             final MappedStatement mappedStatement = (MappedStatement) args[0];
             
-            //获得分页对象中的查询条件
-            //然后从MappedStatemnt中获得boundSql
-            /*BoundSql boundSql = mappedStatement.getBoundSql(pageable);
+            MetaObject metaStatementHandler = MetaObject.forObject(
+                    invocation.getTarget(), DEFAULT_OBJECT_FACTORY,
+                    DEFAULT_OBJECT_WRAPPER_FACTORY);
             
-            //原始的sql语句
-            String originalSql = boundSql.getSql().trim();
-            
-            //用原始的sql语句获得总数据
-            int count = CountHelper
-                    .getCount(originalSql, null, mappedStatement,
-                            pageable.getCondition(), boundSql, dialect);
-            
-            LOG.debug(String.valueOf(count));
-            
-            String newSql = originalSql;
-            
-             * Sort sf = pageable.getSort(); if (sf != null && sf.size() > 0) {
-             * newSql = buildeNewSql(originalSql, sf.iterator()); }
-             
-            
-            //分页查询 本地化对象 修改数据库注意修改实现
-            String pageSql = dialect.getLimitString(newSql,
-                    pageable.getOffset(), pageable.getPageSize(), count);
-            
-            LOG.debug(pageSql);
-            
-            args[2] = new RowBounds(RowBounds.NO_ROW_OFFSET,
-                    RowBounds.NO_ROW_LIMIT);
-            
-            BoundSql newBoundSql = new BoundSql(
-                    mappedStatement.getConfiguration(), pageSql,
-                    boundSql.getParameterMappings(), pageable.getCondition());
-            
-            args[1] = pageable.getCondition();
-            
-            MappedStatement newMs = copyFromMappedStatement(mappedStatement,
-                    new BoundSqlSqlSource(newBoundSql));
-            
-            args[0] = newMs;
-            
-            Object o = invocation.proceed();
-            
-            PageMybatis<?> p = null;
-            if (o instanceof List) {
-                p = new PageMybatis((List<?>) o, pageable, count);
+            // 分离代理对象链
+            while (metaStatementHandler.hasGetter("h")) {
+                Object object = metaStatementHandler.getValue("h");
+                metaStatementHandler = MetaObject.forObject(object,
+                        DEFAULT_OBJECT_FACTORY, DEFAULT_OBJECT_WRAPPER_FACTORY);
+            }
+            // 分离最后一个代理对象的目标类
+            while (metaStatementHandler.hasGetter("target")) {
+                Object object = metaStatementHandler.getValue("target");
+                metaStatementHandler = MetaObject.forObject(object,
+                        DEFAULT_OBJECT_FACTORY, DEFAULT_OBJECT_WRAPPER_FACTORY);
             }
             
-            return p;*/
+            String originalSql = (String) metaStatementHandler.getValue("delegate.boundSql.sql");
+            
+            //获得分页对象中的查询条件
+            //然后从MappedStatemnt中获得boundSql
+            /*
+             * BoundSql boundSql = mappedStatement.getBoundSql(pageable);
+             * //原始的sql语句 String originalSql = boundSql.getSql().trim();
+             * //用原始的sql语句获得总数据 int count = CountHelper .getCount(originalSql,
+             * null, mappedStatement, pageable.getCondition(), boundSql,
+             * dialect); LOG.debug(String.valueOf(count)); String newSql =
+             * originalSql; Sort sf = pageable.getSort(); if (sf != null &&
+             * sf.size() > 0) { newSql = buildeNewSql(originalSql,
+             * sf.iterator()); } //分页查询 本地化对象 修改数据库注意修改实现 String pageSql =
+             * dialect.getLimitString(newSql, pageable.getOffset(),
+             * pageable.getPageSize(), count); LOG.debug(pageSql); args[2] = new
+             * RowBounds(RowBounds.NO_ROW_OFFSET, RowBounds.NO_ROW_LIMIT);
+             * BoundSql newBoundSql = new BoundSql(
+             * mappedStatement.getConfiguration(), pageSql,
+             * boundSql.getParameterMappings(), pageable.getCondition());
+             * args[1] = pageable.getCondition(); MappedStatement newMs =
+             * copyFromMappedStatement(mappedStatement, new
+             * BoundSqlSqlSource(newBoundSql)); args[0] = newMs; Object o =
+             * invocation.proceed(); PageMybatis<?> p = null; if (o instanceof
+             * List) { p = new PageMybatis((List<?>) o, pageable, count); }
+             * return p;
+             */
         }
         
         return invocation.proceed();

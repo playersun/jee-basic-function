@@ -10,7 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.ibatis.builder.SqlSourceBuilder;
 import org.apache.ibatis.executor.ErrorContext;
 import org.apache.ibatis.executor.ExecutorException;
 import org.apache.ibatis.logging.Log;
@@ -19,6 +21,7 @@ import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.ParameterMapping;
 import org.apache.ibatis.mapping.ParameterMode;
+import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.property.PropertyTokenizer;
 import org.apache.ibatis.scripting.xmltags.ForEachSqlNode;
@@ -39,6 +42,51 @@ import com.playersun.jbf.common.persistence.dialect.Dialect;
 public class CountHelper {
     
     private static final Log LOG = LogFactory.getLog(CountHelper.class);
+    
+    public static int getCount(final MappedStatement mappedStatement, final Object parameterObject) throws SQLException  {
+        Connection conn = null;
+        PreparedStatement countStmt = null;
+        ResultSet rs = null;
+        
+        
+        BoundSql countBS = mappedStatement.getBoundSql(parameterObject);
+        String sql = countBS.getSql();
+        
+        if (/*LOG.isDebugEnabled()*/true) {
+            LOG.debug("the pagination generate count sql  is [" + sql +
+                      "]");
+            
+            System.out.println("the pagination generate count sql  is [" + sql +
+                      "]");
+        }
+        
+        try {
+            if (conn == null) {
+                conn = mappedStatement.getConfiguration().getEnvironment()
+                        .getDataSource().getConnection();
+            }
+            
+            countStmt = conn.prepareStatement(sql);
+            CountHelper.setParameters(countStmt, mappedStatement, countBS,
+                    parameterObject);
+            rs = countStmt.executeQuery();
+            int count = 0;
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+            return count;
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (countStmt != null) {
+                countStmt.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+    }
     
     /**
      * 查询总纪录数
@@ -64,14 +112,14 @@ public class CountHelper {
             final Object parameterObject, final BoundSql boundSql,
             Dialect dialect) throws SQLException {
         //        final String count_sql = dialect.getCountString(sql);
-        final String countSql = "select count(1) from (" + sql + ") tmp_count";
+        //final String countSql = "select count(1) from (" + sql + ") tmp_count";
         
         Connection conn = connection;
         PreparedStatement countStmt = null;
         ResultSet rs = null;
         
         if (LOG.isDebugEnabled()) {
-            LOG.debug("the pagination generate count sql  is [" + countSql +
+            LOG.debug("the pagination generate count sql  is [" + sql +
                       "]");
         }
         
@@ -81,9 +129,9 @@ public class CountHelper {
                         .getDataSource().getConnection();
             }
             
-            countStmt = conn.prepareStatement(countSql);
+            countStmt = conn.prepareStatement(sql);
             final BoundSql countBS = new BoundSql(
-                    mappedStatement.getConfiguration(), countSql,
+                    mappedStatement.getConfiguration(), sql,
                     boundSql.getParameterMappings(), parameterObject);
             CountHelper.setParameters(countStmt, mappedStatement, countBS,
                     parameterObject);

@@ -56,7 +56,7 @@
         <include refid="userColumns" />
         FROM sys_user a
         <include refid="userJoins"/>
-        WHERE a.deleted = 0 and a.id = #{id}
+        WHERE a.id = #{id}
     </select>
 
     <!-- 根据登录名查询用户 -->
@@ -65,7 +65,7 @@
         <include refid="userColumns" />
         FROM sys_user a
         <include refid="userJoins"/>
-        WHERE a.deleted = 0 and a.username = #{userName}
+        WHERE a.username = #{userName}
     </select>
 
     <!-- 根据邮箱查询用户 -->
@@ -74,7 +74,7 @@
         <include refid="userColumns" />
         FROM sys_user a
         <!-- <include refid="userJoins"/> -->
-        WHERE a.deleted = 0 and a.email = #{email}
+        WHERE a.email = #{email}
     </select>
 
     <!-- 根据手机号查询用户 -->
@@ -83,7 +83,7 @@
         <include refid="userColumns" />
         FROM sys_user a
         <!-- <include refid="userJoins"/> -->
-        WHERE a.deleted = 0 and a.mobile = #{mobile}
+        WHERE a.mobile = #{mobile}
     </select>
 
 </mapper>

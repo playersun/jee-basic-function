@@ -36,13 +36,13 @@
         SELECT
         <include refid="jobColumns" />
         FROM sys_job a
-        WHERE a.deleted = 0 and a.id = #{id}
+        WHERE a.id = #{id}
     </select>
     
     <select id="findList" resultMap="jobResultMap">
         SELECT
         <include refid="jobColumns" />
-        FROM sys_job a WHERE a.deleted = 0
+        FROM sys_job a 
     </select>
     
     <insert id="insert">

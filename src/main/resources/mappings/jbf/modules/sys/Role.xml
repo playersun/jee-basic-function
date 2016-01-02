@@ -46,7 +46,7 @@
         <include refid="roleColumns" />
         FROM jbf.sys_role a left join sys_role_resource_permission b on
         a.id = b.role_id
-        WHERE a.deleted = 0 and  a.id = #{id}
+        WHERE a.id = #{id}
     </select>
 
     <!-- 查询角色列表 -->
@@ -54,7 +54,7 @@
         SELECT
         <include refid="roleColumns" />
         FROM jbf.sys_role a left join sys_role_resource_permission b on
-        a.id = b.role_id WHERE a.deleted = 0
+        a.id = b.role_id 
     </select>
     
     <insert id="insert">

@@ -13,10 +13,16 @@ import java.util.Map;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.common.collect.Maps;
 import com.playersun.jbf.common.BaseTest;
+import com.playersun.jbf.common.persistence.mybatis.pagination.PageMybatis;
+import com.playersun.jbf.common.persistence.mybatis.pagination.PageRequest;
 import com.playersun.jbf.common.persistence.pagination.Pageable;
+import com.playersun.jbf.common.persistence.search.CommonCondition;
 import com.playersun.jbf.common.persistence.search.SearchRequest;
 import com.playersun.jbf.common.persistence.search.Searchable;
+import com.playersun.jbf.common.persistence.search.Sort;
+import com.playersun.jbf.common.persistence.search.Sort.Direction;
 import com.playersun.jbf.modules.sys.entity.Resource;
 import com.playersun.jbf.modules.sys.service.ResourceService;
 
@@ -96,7 +102,17 @@ public class ResourceTester extends BaseTest {
     @Test
     public void findResourceWithSearchable(){
         Searchable searchable = new SearchRequest();
-        resourceService.findList(searchable);
+        Pageable pageable = new PageRequest(2, 3, new Sort(Direction.DESC,"id"));
+        Map<Object,Object> m = Maps.newHashMap();
+        m.put("deleted", 0);
+        m.put("parentId", 2);
+        
+        searchable.setPage(pageable).setParamObject(m)/*.addSearchParam("isShow", 1)*/;
+        
+        searchable.or(CommonCondition.newCondition("id", 1), CommonCondition.newCondition("id", 2));
+        searchable.or(CommonCondition.newCondition("id", 2), CommonCondition.newCondition("id", 3));
+        
+        PageMybatis<Resource> p = resourceService.findList(searchable);
     }
     
     @Test

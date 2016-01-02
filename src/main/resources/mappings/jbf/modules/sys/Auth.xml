@@ -38,14 +38,14 @@
         SELECT
         <include refid="authColumns" />
         FROM sys_auth a
-        WHERE a.deleted = 0 and a.id = #{id}
+        WHERE a.id = #{id}
     </select>
 
     <!-- 查询角色列表 -->
     <select id="findList" resultMap="authResultMap">
         SELECT
         <include refid="authColumns" />
-        FROM sys_auth a WHERE a.deleted = 0
+        FROM sys_auth a
     </select>
 
     <insert id="insert">

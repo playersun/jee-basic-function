@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.playersun.jbf.common.BaseTest;
 import com.playersun.jbf.common.persistence.pagination.Pageable;
+import com.playersun.jbf.common.persistence.search.SearchRequest;
+import com.playersun.jbf.common.persistence.search.Searchable;
 import com.playersun.jbf.modules.sys.entity.UserOrganizationJob;
 import com.playersun.jbf.modules.sys.service.UserOrganizationJobService;
 
@@ -32,5 +34,11 @@ public class UserOrganizationJobTester extends BaseTest {
         for(UserOrganizationJob uoj : list){
             System.out.println(uoj);
         }
+    }
+    
+    @Test
+    public void findUOJWithSearchable(){
+        Searchable searchable = new SearchRequest();
+        userOrganizationJobService.findList(searchable);
     }
 }

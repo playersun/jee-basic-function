@@ -192,4 +192,8 @@ public interface Searchable {
      * @return
      */
     public <T> T getValue(final String key);
+    
+    public Searchable setParamObject(Object o);
+    
+    public Object getParamObject();
 }

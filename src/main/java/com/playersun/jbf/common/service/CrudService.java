@@ -43,7 +43,7 @@ public class CrudService<T> {
         return crudDao.findAll();
     }*/
     
-    public List<T> findList(Searchable searchable){
+    public PageMybatis<T> findList(Searchable searchable){
         return crudDao.findList(searchable);
     }
     

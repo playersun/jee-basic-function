@@ -34,14 +34,14 @@
         SELECT
         <include refid="groupColumns" />
         FROM sys_group a
-        WHERE a.deleted = 0 and a.id = #{id}
+        WHERE a.id = #{id}
     </select>
 
     <!-- 查询角色列表 -->
     <select id="findList" resultMap="groupResultMap">
         SELECT
         <include refid="groupColumns" />
-        FROM sys_group a WHERE a.deleted = 0
+        FROM sys_group a
     </select>
     
     <select id="findDefaultGroupIds">

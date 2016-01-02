@@ -37,13 +37,13 @@
         SELECT
         <include refid="organizationColumns" />
         FROM sys_organization a
-        WHERE a.deleted = 0 and a.id = #{id}
+        WHERE  a.id = #{id}
     </select>
     
     <select id="findList" resultMap="organizationResultMap">
         SELECT
         <include refid="organizationColumns" />
-        FROM sys_organization a WHERE a.deleted = 0
+        FROM sys_organization a 
     </select>
     
     <insert id="insert">

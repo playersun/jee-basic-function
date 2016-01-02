@@ -30,14 +30,14 @@
         SELECT
             <include refid="permissionColumns"/>
         FROM sys_permission a
-        WHERE a.deleted = 0 and a.id = #{id}
+        WHERE a.id = #{id}
     </select>
     
     <!-- 查询资源列表 -->
     <select id="findList" resultMap="permissionResultMap">
         SELECT
             <include refid="permissionColumns"/>
-        FROM sys_permission a WHERE a.deleted = 0
+        FROM sys_permission a 
     </select>
     
     <insert id="insert">

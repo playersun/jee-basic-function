@@ -36,14 +36,14 @@
         SELECT
             <include refid="resourceColumns"/>
         FROM sys_resource a
-        WHERE a.deleted = 0 and a.id = #{id}
+        WHERE a.id = #{id}
     </select>
     
     <!-- 查询资源列表 -->
     <select id="findList" resultMap="resourceResultMap">
         SELECT
             <include refid="resourceColumns"/>
-        FROM sys_resource a WHERE a.deleted = 0
+        FROM sys_resource a WHERE a.deleted = #{deleted} and a.parent_id = #{parentId}
     </select>
 
     <insert id="insert">

@@ -5,6 +5,7 @@
  */
 package com.playersun.jbf.common.persistence.search;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -16,11 +17,14 @@ import org.apache.shiro.util.CollectionUtils;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.reflect.Reflection;
+import com.opensymphony.module.sitemesh.Page;
 import com.playersun.jbf.common.persistence.mybatis.pagination.PageRequest;
 import com.playersun.jbf.common.persistence.pagination.Pageable;
 import com.playersun.jbf.common.persistence.search.exception.InvalidSearchPropertyException;
 import com.playersun.jbf.common.persistence.search.exception.InvalidSearchValueException;
 import com.playersun.jbf.common.persistence.search.exception.SearchException;
+import com.playersun.jbf.common.utils.reflex.Reflections;
 
 
 /**
@@ -43,13 +47,25 @@ public class SearchRequest implements Searchable {
     //Mybatis参数
     private Object paramObj;
     
+    /**
+     * @param searchParams
+     * @see SearchRequest#SearchRequest(java.util.Map<java.lang.String,java.lang.Object>, Pageable, sort)
+     */
     public SearchRequest() {
         this(null, null, null);
     }
     
     /**
      * @param searchParams
-     * @see SearchRequest#SearchRequest(java.util.Map<java.lang.String,java.lang.Object>)
+     * @see SearchRequest#SearchRequest(java.util.Map<java.lang.String,java.lang.Object>, Pageable, sort)
+     */
+    public SearchRequest(Pageable page) {
+        this(null, page, null);
+    }
+    
+    /**
+     * @param searchParams
+     * @see SearchRequest#SearchRequest(java.util.Map<java.lang.String,java.lang.Object>, Pageable, sort)
      */
     public SearchRequest(final Map<String, Object> searchParams) {
         this(searchParams, null, null);
@@ -57,7 +73,7 @@ public class SearchRequest implements Searchable {
     
     /**
      * @param searchParams
-     * @see SearchRequest#SearchRequest(java.util.Map<java.lang.String,java.lang.Object>)
+     * @see SearchRequest#SearchRequest(java.util.Map<java.lang.String,java.lang.Object>, Pageable, sort)
      */
     public SearchRequest(final Map<String, Object> searchParams, final Pageable page) {
         this(searchParams, page, null);
@@ -65,7 +81,7 @@ public class SearchRequest implements Searchable {
 
     /**
      * @param searchParams
-     * @see SearchRequest#SearchRequest(java.util.Map<java.lang.String,java.lang.Object>)
+     * @see SearchRequest#SearchRequest(java.util.Map<java.lang.String,java.lang.Object>, Pageable, sort)
      */
     public SearchRequest(final Map<String, Object> searchParams, final Sort sort) throws SearchException {
         this(searchParams, null, sort);
@@ -120,6 +136,7 @@ public class SearchRequest implements Searchable {
         //把排序合并到page中
         if (page != null) {
             this.page = new PageRequest(page.getPageNumber(), page.getPageSize(), this.sort);
+            setParamObject(page.getParmObject());
         } else {
             this.page = null;
         }
@@ -226,19 +243,6 @@ public class SearchRequest implements Searchable {
     }
 
     @Override
-    public <T> Searchable convert(Class<T> entityClass)
-            throws InvalidSearchValueException, InvalidSearchPropertyException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Searchable markConverted() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public Searchable setPage(Pageable page) {
         merge(sort, page);
         return this;
@@ -265,12 +269,6 @@ public class SearchRequest implements Searchable {
     @Override
     public Collection<Condition> getConditions() {
         return Collections.unmodifiableCollection(conditions);
-    }
-
-    @Override
-    public boolean isConverted() {
-        // TODO Auto-generated method stub
-        return false;
     }
 
     @Override
@@ -374,7 +372,7 @@ public class SearchRequest implements Searchable {
 
     @Override
     public Searchable setParamObject(Object o) {
-        this.paramObj = o;
+        this.paramObj = Reflections.bean2Map(this.paramObj,o);
         return this;
     }
 

@@ -19,6 +19,7 @@ import com.playersun.jbf.common.persistence.mybatis.pagination.PageMybatis;
 import com.playersun.jbf.common.persistence.mybatis.pagination.PageRequest;
 import com.playersun.jbf.common.persistence.pagination.Pageable;
 import com.playersun.jbf.common.persistence.search.CommonCondition;
+import com.playersun.jbf.common.persistence.search.SearchOperator;
 import com.playersun.jbf.common.persistence.search.SearchRequest;
 import com.playersun.jbf.common.persistence.search.Searchable;
 import com.playersun.jbf.common.persistence.search.Sort;
@@ -37,11 +38,10 @@ public class ResourceTester extends BaseTest {
     private ResourceService resourceService;
     
     @Test
-    public void addResource(){
+    public void addResource() {
         Resource resource = new Resource();
         
         Date date = new Date();
-
         
         resource.setName("我是资源");
         resource.setParentId(1L);
@@ -60,37 +60,36 @@ public class ResourceTester extends BaseTest {
     }
     
     @Test
-    public void getResourceById(){
+    public void getResourceById() {
         Resource resource = resourceService.findById(1L);
         System.out.println(resource);
     }
     
     @Test
-    public void getResourceList(){
-        List<Resource> list = resourceService.findList((Pageable)null);
+    public void getResourceList() {
+        List<Resource> list = resourceService.findList((Pageable) null);
         for (Resource resource : list) {
             System.out.println(resource);
         }
     }
     
     @Test
-    public void delete(){
+    public void delete() {
         Resource resource = resourceService.findById(1L);
         System.out.println(resourceService.delete(resource));
     }
     
     @Test
-    public void deleteById(){
+    public void deleteById() {
         System.out.println(resourceService.deleteById(2L));
     }
     
     @Test
-    public void deleteBatch(){
-        List<Resource> list = resourceService.findList((Pageable)null);
+    public void deleteBatch() {
+        List<Resource> list = resourceService.findList((Pageable) null);
         
         System.out.println(resourceService.deleteBatch(list));
     }
-    
     
     @Test
     public void updateResource() {
@@ -100,37 +99,65 @@ public class ResourceTester extends BaseTest {
     }
     
     @Test
-    public void findResourceWithSearchable(){
+    public void findPage() {
+        
+        //        Resource resourc = resourceService.findById(1L);
+        //        
+        //        Map<String, Object> map = new HashMap<String, Object>();
+        //        map.put("deleted", 0);
+        //        map.put("parentId", 2);
+        
+        Resource r = new Resource();
+        r.setParentId(1L);
+        r.setDeleted(false);
+        
+        Pageable pageable = new PageRequest(6, 3, r, new Sort(Direction.DESC, "id"));
+        PageMybatis<Resource> p = resourceService.findList(pageable);
+        System.out.print(p);
+    }
+    
+    @Test
+    public void findResourceWithOrAnd() {
         Searchable searchable = new SearchRequest();
-        Pageable pageable = new PageRequest(2, 3, new Sort(Direction.DESC,"id"));
-        Map<Object,Object> m = Maps.newHashMap();
-        m.put("deleted", 0);
-        m.put("parentId", 2);
         
-        searchable.setPage(pageable).setParamObject(m)/*.addSearchParam("isShow", 1)*/;
+        Map<Object, Object> m1 = Maps.newHashMap();
+        m1.put("deleted", 0);
         
-        searchable.or(CommonCondition.newCondition("id", 1), CommonCondition.newCondition("id", 2));
-        searchable.or(CommonCondition.newCondition("id", 2), CommonCondition.newCondition("id", 3));
+        Pageable pageable = new PageRequest(2, 3, m1, new Sort(Direction.DESC, "id"));
+        Map<Object, Object> m2 = Maps.newHashMap();
+        m2.put("parentId", 2);
+        
+        searchable.setPage(pageable).setParamObject(m2).addSearchParam("isShow", 1);
+        
+        searchable.or(CommonCondition.newCondition("id_lte", 5), CommonCondition.newCondition("id_gt", 7));
+        searchable.and(CommonCondition.newCondition("weight", SearchOperator.ne, 8),
+                CommonCondition.newCondition("weight", SearchOperator.gte, 2));
         
         PageMybatis<Resource> p = resourceService.findList(searchable);
     }
     
     @Test
-    public void findPage() {
+    public void findResourceWithLike() {
+        Searchable searchable = new SearchRequest();
         
-        //Resource resourc = resourceService.findById(1L);
+        searchable.addSearchParam("deleted", 0);
         
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("parentID", 2);
+        searchable.or(CommonCondition.newCondition("url_like", "monitor"),
+                CommonCondition.newCondition("identification", SearchOperator.prefixLike, "im"));
         
-        Resource r = new Resource();
-        r.setParentId(1L);
+        PageMybatis<Resource> p = resourceService.findList(searchable);
+    }
+    
+    @Test
+    public void findResourceIN(){
+        Searchable searchable = new SearchRequest();
         
-        /*List<SortField> list = new ArrayList<SortField>();
-        list.add(new SortField("id", SortDirection.DESC));
+        int [] ids = {1,2,3,4,5};
         
-        Pageable pageable = new PageRequest(6, 3, map, list);
-        PageMybatis<Resource> p = resourceService.findList(pageable);
-        System.out.print(p);*/
+        String str_ids = "1,2,3,4,5";
+        
+        searchable.addSearchParam("id_in", str_ids);
+        
+        PageMybatis<Resource> p = resourceService.findList(searchable);
     }
 }

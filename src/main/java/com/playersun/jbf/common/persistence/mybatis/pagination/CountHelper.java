@@ -30,6 +30,7 @@ import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
 
 import com.playersun.jbf.common.persistence.dialect.Dialect;
+import com.playersun.jbf.common.persistence.search.SearchableSqlBuilder;
 
 /**
  * 获得分页查询的数据总量，用于计算总页数
@@ -43,32 +44,32 @@ public class CountHelper {
     
     private static final Log LOG = LogFactory.getLog(CountHelper.class);
     
-    public static int getCount(final MappedStatement mappedStatement, final Object parameterObject) throws SQLException  {
+    /**
+     * 分页时查询总记录数
+     * @param mappedStatement
+     * @param sqlBuilder
+     * @return
+     * @throws SQLException
+     */
+    public static int getCount(final MappedStatement mappedStatement, final SearchableSqlBuilder sqlBuilder) throws SQLException {
         Connection conn = null;
         PreparedStatement countStmt = null;
         ResultSet rs = null;
         
-        
-        BoundSql countBS = mappedStatement.getBoundSql(parameterObject);
-        String sql = countBS.getSql();
-        
         if (/*LOG.isDebugEnabled()*/true) {
-            LOG.debug("the pagination generate count sql  is [" + sql +
-                      "]");
-            
-            System.out.println("the pagination generate count sql  is [" + sql +
-                      "]");
+            LOG.debug("the pagination generate count sql  is [" + sqlBuilder.buildCountSql() + "]");
         }
         
         try {
             if (conn == null) {
-                conn = mappedStatement.getConfiguration().getEnvironment()
-                        .getDataSource().getConnection();
+                conn = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
             }
             
-            countStmt = conn.prepareStatement(sql);
-            CountHelper.setParameters(countStmt, mappedStatement, countBS,
-                    parameterObject);
+            countStmt = conn.prepareStatement(sqlBuilder.buildCountSql());
+            
+            BoundSql bSql = sqlBuilder.buildCountSqlSource().getBoundSql(sqlBuilder.getParams());
+            
+            CountHelper.setParameters(countStmt, mappedStatement, bSql, sqlBuilder.getParams());
             rs = countStmt.executeQuery();
             int count = 0;
             if (rs.next()) {
@@ -88,71 +89,6 @@ public class CountHelper {
         }
     }
     
-    /**
-     * 查询总纪录数
-     * 
-     * @param sql
-     *            SQL语句
-     * @param connection
-     *            数据库连接
-     * @param mappedStatement
-     *            mapped
-     * @param parameterObject
-     *            参数
-     * @param boundSql
-     *            boundSql
-     * @param dialect
-     *            database dialect
-     * @return 总记录数
-     * @throws java.sql.SQLException
-     *             sql查询错误
-     */
-    public static int getCount(final String sql, final Connection connection,
-            final MappedStatement mappedStatement,
-            final Object parameterObject, final BoundSql boundSql,
-            Dialect dialect) throws SQLException {
-        //        final String count_sql = dialect.getCountString(sql);
-        //final String countSql = "select count(1) from (" + sql + ") tmp_count";
-        
-        Connection conn = connection;
-        PreparedStatement countStmt = null;
-        ResultSet rs = null;
-        
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("the pagination generate count sql  is [" + sql +
-                      "]");
-        }
-        
-        try {
-            if (conn == null) {
-                conn = mappedStatement.getConfiguration().getEnvironment()
-                        .getDataSource().getConnection();
-            }
-            
-            countStmt = conn.prepareStatement(sql);
-            final BoundSql countBS = new BoundSql(
-                    mappedStatement.getConfiguration(), sql,
-                    boundSql.getParameterMappings(), parameterObject);
-            CountHelper.setParameters(countStmt, mappedStatement, countBS,
-                    parameterObject);
-            rs = countStmt.executeQuery();
-            int count = 0;
-            if (rs.next()) {
-                count = rs.getInt(1);
-            }
-            return count;
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
-            if (countStmt != null) {
-                countStmt.close();
-            }
-            if (conn != null) {
-                conn.close();
-            }
-        }
-    }
     
     /**
      * 对SQL参数(?)设值
@@ -169,56 +105,47 @@ public class CountHelper {
      *             数据库异常
      */
     @SuppressWarnings("unchecked")
-    public static void setParameters(PreparedStatement ps,
-            MappedStatement mappedStatement, BoundSql boundSql,
+    public static void setParameters(PreparedStatement ps, MappedStatement mappedStatement, BoundSql boundSql,
             Object parameterObject) throws SQLException {
-        ErrorContext.instance().activity("setting parameters")
-                .object(mappedStatement.getParameterMap().getId());
-        List<ParameterMapping> parameterMappings = boundSql
-                .getParameterMappings();
+        ErrorContext.instance().activity("setting parameters").object(mappedStatement.getParameterMap().getId());
+        
+        List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
+        
         if (parameterMappings != null) {
             Configuration configuration = mappedStatement.getConfiguration();
-            TypeHandlerRegistry typeHandlerRegistry = configuration
-                    .getTypeHandlerRegistry();
-            MetaObject metaObject = parameterObject == null ? null
-                    : configuration.newMetaObject(parameterObject);
+            TypeHandlerRegistry typeHandlerRegistry = configuration.getTypeHandlerRegistry();
+            MetaObject metaObject = parameterObject == null ? null : configuration.newMetaObject(parameterObject);
+            
             for (int i = 0; i < parameterMappings.size(); i++) {
                 ParameterMapping parameterMapping = parameterMappings.get(i);
+                
                 if (parameterMapping.getMode() != ParameterMode.OUT) {
                     Object value;
                     String propertyName = parameterMapping.getProperty();
                     PropertyTokenizer prop = new PropertyTokenizer(propertyName);
+                    
                     if (parameterObject == null) {
                         value = null;
-                    } else if (typeHandlerRegistry
-                            .hasTypeHandler(parameterObject.getClass())) {
+                    } else if (typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) {
                         value = parameterObject;
                     } else if (boundSql.hasAdditionalParameter(propertyName)) {
                         value = boundSql.getAdditionalParameter(propertyName);
-                    } else if (propertyName
-                            .startsWith(ForEachSqlNode.ITEM_PREFIX) &&
+                    } else if (propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) &&
                                boundSql.hasAdditionalParameter(prop.getName())) {
                         value = boundSql.getAdditionalParameter(prop.getName());
                         if (value != null) {
-                            value = configuration.newMetaObject(value)
-                                    .getValue(
-                                            propertyName.substring(prop
-                                                    .getName().length()));
+                            value = configuration.newMetaObject(value).getValue(
+                                    propertyName.substring(prop.getName().length()));
                         }
                     } else {
-                        value = metaObject == null ? null : metaObject
-                                .getValue(propertyName);
+                        value = metaObject == null ? null : metaObject.getValue(propertyName);
                     }
                     TypeHandler typeHandler = parameterMapping.getTypeHandler();
                     if (typeHandler == null) {
-                        throw new ExecutorException(
-                                "There was no TypeHandler found for parameter " +
-                                        propertyName +
-                                        " of statement " +
-                                        mappedStatement.getId());
+                        throw new ExecutorException("There was no TypeHandler found for parameter " + propertyName +
+                                                    " of statement " + mappedStatement.getId());
                     }
-                    typeHandler.setParameter(ps, i + 1, value,
-                            parameterMapping.getJdbcType());
+                    typeHandler.setParameter(ps, i + 1, value, parameterMapping.getJdbcType());
                 }
             }
         }

@@ -22,8 +22,8 @@ public class PageRequest implements Pageable {
     //每页多少数据
     private int pageSize;
     
-    /*//查询条件
-    private Object condition;*/
+    //查询条件
+    private Object paramObj;
     
     //排序条件
     private Sort sort;
@@ -45,6 +45,17 @@ public class PageRequest implements Pageable {
      * @param sort 排队条件
      */
     public PageRequest(int number, int size, Sort sort) {
+        this(number, size, null, sort);
+    }
+    
+    /**
+     * 创建一个分页参数 
+     * @param number    第几页
+     * @param size      每页多少条数据
+     * @param condition where条件的参数
+     * @param sort 排队条件
+     */
+    public PageRequest(int number, int size, Object param, Sort sort) {
         if (number < 0) {
             throw new IllegalArgumentException(
                     "Page index must not be less than zero!");
@@ -57,6 +68,7 @@ public class PageRequest implements Pageable {
         
         this.pageNumber = number;
         this.pageSize = size;
+        this.paramObj = param;
         this.sort = sort;
     }
     
@@ -79,15 +91,15 @@ public class PageRequest implements Pageable {
     public boolean hasPrevious() {
         return false;
     }
-    
-    /*@Override
-    public Object getCondition() {
-        return this.condition;
-    }*/
 
     @Override
     public Sort getSort() {
         return this.sort;
+    }
+
+    @Override
+    public Object getParmObject() {
+        return paramObj;
     }
     
 }

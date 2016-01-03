@@ -7,7 +7,6 @@ package com.playersun.jbf.common.persistence.mybatis.interceptor;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
@@ -28,9 +27,10 @@ import org.apache.ibatis.session.RowBounds;
 import com.playersun.jbf.common.persistence.dialect.DBMS;
 import com.playersun.jbf.common.persistence.dialect.Dialect;
 import com.playersun.jbf.common.persistence.dialect.DialectClient;
-import com.playersun.jbf.common.persistence.mybatis.builder.SearchableSqlSourceBuilder;
 import com.playersun.jbf.common.persistence.mybatis.pagination.CountHelper;
+import com.playersun.jbf.common.persistence.mybatis.pagination.PageMybatis;
 import com.playersun.jbf.common.persistence.pagination.Pageable;
+import com.playersun.jbf.common.persistence.search.SearchRequest;
 import com.playersun.jbf.common.persistence.search.Searchable;
 import com.playersun.jbf.common.persistence.search.SearchableSqlBuilder;
 
@@ -42,10 +42,6 @@ import com.playersun.jbf.common.persistence.search.SearchableSqlBuilder;
  */
 @Intercepts({ @Signature(type = Executor.class, method = "query", args = { MappedStatement.class, Object.class,
         RowBounds.class, ResultHandler.class }) })
-/*
- * @Intercepts({@Signature(type=StatementHandler.class, method="query",
- * args={Statement.class,ResultHandler.class})})
- */
 public class PaginationInterceptor implements Interceptor, Serializable {
     
     private static final long serialVersionUID = -891217777766024561L;
@@ -63,119 +59,61 @@ public class PaginationInterceptor implements Interceptor, Serializable {
         boolean hasPageable = false;
         
         //判断传进来的参数是否是搜索条件
-        final Searchable searchable = (hasSearch = (args[1] != null && args[1] instanceof Searchable)) ? (Searchable) args[1]
+        Searchable searchable = (hasSearch = (args[1] != null && args[1] instanceof Searchable)) ? (Searchable) args[1]
                 : null;
         //获得分页条件
-        final Pageable pageable = hasSearch ? searchable.getPage()
+        Pageable pageable = hasSearch ? searchable.getPage()
                 : (args[1] != null && args[1] instanceof Pageable) ? (Pageable) args[1] : null;
         
         hasPageable = pageable != null;
         
         //判断是否需要拦截处理搜索或分页
         if (hasSearch || hasPageable) {
+            
+            if (!hasSearch && hasPageable) {
+                searchable = new SearchRequest(pageable);
+            }
+            
             //获得到Statement
             final MappedStatement mappedStatement = (MappedStatement) args[0];
             
             //生成分页需要的查询语句，包括count和paged
-            SearchableSqlBuilder sBuilder = new SearchableSqlBuilder(mappedStatement, searchable);
-            
-            /*
-             * 重新组织prepareStatement需要的语句和参数 例如：将 select * from tmp where
-             * id=#{id} and is_show=#{isShow} 转换成 select * from tmp where id=?
-             * and is_show=? 同时生产ParameterMappings : [{id,1},{isShow,2}]
-             */
-            SearchableSqlSourceBuilder ssb = new SearchableSqlSourceBuilder(mappedStatement.getConfiguration());
-            SqlSource ss = ssb.parse(sBuilder.buildCountSql(), sBuilder.getParams().getClass(), sBuilder.getParams(),
-                    mappedStatement.getBoundSql(sBuilder.getParams()).getParameterMappings());
-            
-            //用新的sqlsource，创建新的mappedstatement
-            MappedStatement newMappedStatement = copyFromMappedStatement(mappedStatement, ss);
-            
+            SearchableSqlBuilder sBuilder = new SearchableSqlBuilder(mappedStatement, searchable).build();
+            PageMybatis<?> p = null;
+            int count = 0;
             if (hasPageable) {
                 
-                int count = CountHelper.getCount(newMappedStatement, sBuilder.getParams());
+                //如果要查询分页数据，先查询出来总记录数
+                count = CountHelper.getCount(mappedStatement, sBuilder);
                 
-                LOG.debug("count: " + count);
+                LOG.debug("count : " + count);
                 
-                String pageSql = sBuilder.buildPagedSql();
+                //用新的sqlsource，创建新的mappedstatement
+                args[0] = copyFromMappedStatement(mappedStatement, sBuilder.buildPagedSqlSource(count, dialect));
                 
-                dialect.getLimitString(pageSql, pageable.getOffset(), pageable.getPageSize(), count);
-                
-                LOG.debug(pageSql);
-                //            args[2] = new RowBounds(RowBounds.NO_ROW_OFFSET,
-                //                    RowBounds.NO_ROW_LIMIT);
-                //            BoundSql newBoundSql = new BoundSql(
-                //                    mappedStatement.getConfiguration(), pageSql,
-                //                    boundSql.getParameterMappings(), pageable.getCondition());
-                //            args[1] = pageable.getCondition();
-                //            MappedStatement newMs = copyFromMappedStatement(mappedStatement,
-                //                    new BoundSqlSqlSource(newBoundSql));
-                //            args[0] = newMs;
-                //            Object o = invocation.proceed();
-                //            PageMybatis<?> p = null;
-                //            if (o instanceof List) {
-                //                p = new PageMybatis((List<?>) o, pageable, count);
-                //            }
-                //            return p;
+            } else {
+                //用新的sqlsource，创建新的mappedstatement
+                args[0] = copyFromMappedStatement(mappedStatement, sBuilder.buildPagedSqlSource());
             }
             
-            args[1] = searchable.getParamObject();
+            args[1] = sBuilder.getParams();
             
             Object o = invocation.proceed();
+            if (o instanceof List) {
+                if (hasPageable) {
+                    p = new PageMybatis((List<?>) o, pageable, count);
+                } else {
+                    p = new PageMybatis((List<?>) o);
+                }
+            }
             
-            boolean b = o instanceof List;
+            LOG.debug("Page : " + p);
             
-            //            //获得分页对象中的查询条件
-            //            //然后从MappedStatemnt中获得boundSql
-            //            BoundSql boundSql = mappedStatement.getBoundSql(pageable);
-            //            //原始的sql语句 
-            //            String originalSql = boundSql.getSql().trim();
-            //            //用原始的sql语句获得总数据 
-            //            int count = CountHelper
-            //                    .getCount(originalSql, null, mappedStatement,
-            //                            pageable.getCondition(), boundSql, dialect);
-            //            LOG.debug(String.valueOf(count));
-            //            String newSql = originalSql;
-            //            Sort sf = pageable.getSort();
-            //            if (sf != null && sf.size() > 0) {
-            //                newSql = buildeNewSql(originalSql, sf.iterator());
-            //            } //分页查询 本地化对象 修改数据库注意修改实现 String pageSql =
-            //            dialect.getLimitString(newSql, pageable.getOffset(),
-            //                    pageable.getPageSize(), count);
-            //            LOG.debug(pageSql);
-            //            args[2] = new RowBounds(RowBounds.NO_ROW_OFFSET,
-            //                    RowBounds.NO_ROW_LIMIT);
-            //            BoundSql newBoundSql = new BoundSql(
-            //                    mappedStatement.getConfiguration(), pageSql,
-            //                    boundSql.getParameterMappings(), pageable.getCondition());
-            //            args[1] = pageable.getCondition();
-            //            MappedStatement newMs = copyFromMappedStatement(mappedStatement,
-            //                    new BoundSqlSqlSource(newBoundSql));
-            //            args[0] = newMs;
-            //            Object o = invocation.proceed();
-            //            PageMybatis<?> p = null;
-            //            if (o instanceof List) {
-            //                p = new PageMybatis((List<?>) o, pageable, count);
-            //            }
-            //            return p;
-            
+            return p;
         }
         
         return invocation.proceed();
     }
-    
-    /*
-     * private String buildeNewSql(String originalSql, Iterator<SortField>
-     * iterator) { StringBuffer strBuf = new StringBuffer(originalSql);
-     * SortField sf = null; if (iterator.hasNext()) { sf = iterator.next();
-     * strBuf.append(Constant.BLANK_STR).append(SqlUtil.ORDER_BY_STR)
-     * .append(Constant.BLANK_STR);
-     * strBuf.append(sf.getField()).append(Constant.BLANK_STR)
-     * .append(sf.getDirection()); while (iterator.hasNext()) { sf =
-     * iterator.next(); strBuf.append(Constant.COMMA);
-     * strBuf.append(sf.getField()).append(Constant.BLANK_STR)
-     * .append(sf.getDirection()); } } return strBuf.toString(); }
-     */
     
     @Override
     public Object plugin(Object target) {
@@ -196,6 +134,15 @@ public class PaginationInterceptor implements Interceptor, Serializable {
         dialect = DialectClient.getDbmsDialect(dbms);
     }
     
+    /**
+     * 用新的SqlSource，生成新的MappedStatement
+     * 
+     * 主要是重新组织预查询语句 {@link com.playersun.jbf.common.persistence.search.SearchableSqlBuilder}
+     * 
+     * @param ms
+     * @param newSqlSource
+     * @return
+     */
     private MappedStatement copyFromMappedStatement(MappedStatement ms, SqlSource newSqlSource) {
         MappedStatement.Builder builder = new MappedStatement.Builder(ms.getConfiguration(), ms.getId(), newSqlSource,
                 ms.getSqlCommandType());

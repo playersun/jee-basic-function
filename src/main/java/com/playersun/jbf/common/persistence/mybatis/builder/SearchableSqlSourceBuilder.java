@@ -26,7 +26,7 @@ import com.google.common.collect.Lists;
 
 
 /**
- * @see org.apache.ibatis.builder.SqlSourceBuilder
+ * 见{@link org.apache.ibatis.builder.SqlSourceBuilder}
  * 
  * @author PlayerSun
  * @date Jan 1, 2016

@@ -39,6 +39,8 @@ public class PageMybatis<T> extends ArrayList<T> {
      */
     private long total;
     
+    private boolean paged = false;
+    
     public PageMybatis(){
         super();
     }
@@ -68,6 +70,7 @@ public class PageMybatis<T> extends ArrayList<T> {
         super.addAll(content);
         this.total = total;
         this.pageable = pageable;
+        this.paged = true;
     }
     
     /**
@@ -156,6 +159,10 @@ public class PageMybatis<T> extends ArrayList<T> {
      */
     public boolean hasContent() {
         return !super.isEmpty();
+    }
+    
+    public boolean isPaged() {
+        return paged;
     }
     
     @Override

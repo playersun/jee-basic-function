@@ -49,4 +49,10 @@ public interface Pageable {
      * @return
      */
     Sort getSort();
+    
+    /**
+     * 获得mybatis查询参数
+     * @return
+     */
+    Object getParmObject();
 }

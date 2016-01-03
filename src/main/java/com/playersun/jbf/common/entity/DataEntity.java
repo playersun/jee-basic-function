@@ -7,8 +7,6 @@ package com.playersun.jbf.common.entity;
 
 import java.util.Date;
 
-import com.playersun.jbf.common.persistence.mybatis.annotation.Column;
-
 /**
  * 
  * @author PlayerSun
@@ -17,16 +15,12 @@ import com.playersun.jbf.common.persistence.mybatis.annotation.Column;
 public class DataEntity<T> extends BaseEntity<T> {
     
     private static final long serialVersionUID = 3237337207884624331L;
-    @Column(name = "create_by")
     protected Long createBy; //谁新建的
     
-    @Column(name = "create_date")
     protected Date createDate; //创建日期
     
-    @Column(name = "update_by")
     protected Long updateBy; //被谁更新
     
-    @Column(name = "update_date")
     protected Date updateDate; //更新时间
     
     protected String remarks; //备注

@@ -7,8 +7,6 @@ package com.playersun.jbf.modules.sys.entity;
 
 import com.playersun.jbf.common.constant.Constant;
 import com.playersun.jbf.common.entity.DataEntity;
-import com.playersun.jbf.common.persistence.mybatis.annotation.Column;
-import com.playersun.jbf.common.persistence.mybatis.annotation.Table;
 import com.playersun.jbf.common.plugin.entity.Treeable;
 
 /**
@@ -17,13 +15,10 @@ import com.playersun.jbf.common.plugin.entity.Treeable;
  * @author PlayerSun
  * @date Aug 9, 2015
  */
-@Table(name = "sys_resource")
 public class Resource extends DataEntity<Resource> implements Treeable {
     
-    @Column(name = "parent_id")
     private Long parentId;
     
-    @Column(name = "parent_ids")
     private String parentIds;
     
     private String name;
@@ -36,10 +31,8 @@ public class Resource extends DataEntity<Resource> implements Treeable {
     
     private Integer weight;
     
-    @Column(name = "is_show")
     private Boolean isShow;
     
-    @Column(name = "has_children")
     private boolean hasChildren;
     
     public Long getParentId() {

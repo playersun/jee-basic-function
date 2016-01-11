@@ -26,7 +26,7 @@ public class GroupService extends CrudService<Group> {
     @Autowired
     private GroupRelationService groupRelationService;
 
-    private GroupDao getGroupRepository() {
+    private GroupDao getGroupDao() {
         return (GroupDao) crudDao;
     }
     
@@ -39,7 +39,7 @@ public class GroupService extends CrudService<Group> {
      */
     public Set<Long> findShowGroupIds(Long userId, Set<Long> organizationIds) {
         Set<Long> groupIds = Sets.newHashSet();
-        groupIds.addAll(getGroupRepository().findDefaultGroupIds());
+        groupIds.addAll(getGroupDao().findDefaultGroupIds());
         groupIds.addAll(groupRelationService.findGroupIds(userId, organizationIds));
 
 

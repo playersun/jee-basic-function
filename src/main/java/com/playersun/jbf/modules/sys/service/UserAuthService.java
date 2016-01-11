@@ -71,8 +71,7 @@ public class UserAuthService {
             Long organizationId = o.getOrganizationId();
             Long jobId = o.getJobId();
             
-            if (organizationId != null && jobId != null &&
-                organizationId != 0L && jobId != 0L) {
+            if (organizationId != null && jobId != null && organizationId != 0L && jobId != 0L) {
                 organizationJobIds.add(new Long[] { organizationId, jobId });
             }
             organizationIds.add(organizationId);
@@ -80,8 +79,7 @@ public class UserAuthService {
         }
         
         //默认分组 + 根据用户编号 和 组织编号 找 分组
-        Set<Long> groupIds = groupService.findShowGroupIds(userId,
-                organizationIds);
+        Set<Long> groupIds = groupService.findShowGroupIds(userId, organizationIds);
         
         //获取权限
         //1.1、获取用户角色
@@ -89,10 +87,10 @@ public class UserAuthService {
         //1.3、获取工作职务角色
         //1.4、获取组织机构和工作职务组合的角色
         //1.5、获取组角色
-        /*Set<Long> roleIds = authService.findRoleIds(userId, groupIds,
+        Set<Long> roleIds = authService.findRoleIds(userId, groupIds,
                 organizationIds, jobIds, organizationJobIds);
         
-        Set<Role> roles = roleService.findShowRoles(roleIds);*/
+        /*Set<Role> roles = roleService.findShowRoles(roleIds);*/
         
         return null;
     }

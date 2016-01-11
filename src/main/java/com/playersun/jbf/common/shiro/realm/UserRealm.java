@@ -26,6 +26,7 @@ import com.playersun.jbf.modules.sys.exception.UserException;
 import com.playersun.jbf.modules.sys.exception.UserNotExistsException;
 import com.playersun.jbf.modules.sys.exception.UserPasswordNotMatchException;
 import com.playersun.jbf.modules.sys.exception.UserPasswordRetryLimitExceedException;
+import com.playersun.jbf.modules.sys.service.UserAuthService;
 import com.playersun.jbf.modules.sys.service.UserService;
 
 /**
@@ -38,6 +39,9 @@ public class UserRealm extends AuthorizingRealm {
     
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private UserAuthService userAuthService;
     
     /**
      * 授权

@@ -5,9 +5,13 @@
  */
 package com.playersun.jbf.modules.sys.service;
 
+import java.util.List;
+import java.util.Set;
+
 import org.springframework.stereotype.Service;
 
 import com.playersun.jbf.common.service.CrudService;
+import com.playersun.jbf.modules.sys.dao.RoleDao;
 import com.playersun.jbf.modules.sys.entity.Role;
 
 /**
@@ -17,5 +21,11 @@ import com.playersun.jbf.modules.sys.entity.Role;
  */
 @Service
 public class RoleService extends CrudService<Role> {
+    private RoleDao getRoleDao() {
+        return (RoleDao) crudDao;
+    }
     
+    public List<Role> findShowRoles(Set<Long> roleIds){
+        return getRoleDao().findShowRoles( roleIds);
+    }
 }

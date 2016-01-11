@@ -5,6 +5,9 @@
  */
 package com.playersun.jbf.modules.sys.dao;
 
+import java.util.List;
+import java.util.Set;
+
 import com.playersun.jbf.common.persistence.CrudDao;
 import com.playersun.jbf.common.persistence.mybatis.annotation.DaoMapping;
 import com.playersun.jbf.modules.sys.entity.Role;
@@ -16,5 +19,5 @@ import com.playersun.jbf.modules.sys.entity.Role;
  */
 @DaoMapping
 public interface RoleDao extends CrudDao<Role> {
-    
+    public List<Role> findShowRoles(Set<Long> roleIds);
 }

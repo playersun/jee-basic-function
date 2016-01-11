@@ -70,15 +70,19 @@ public class UserAuthService {
         for (UserOrganizationJob o : user.getOrganizationJobs()) {
             Long organizationId = o.getOrganizationId();
             Long jobId = o.getJobId();
-            
+            //用户在某个部门的某个职位
             if (organizationId != null && jobId != null && organizationId != 0L && jobId != 0L) {
                 organizationJobIds.add(new Long[] { organizationId, jobId });
             }
+            //用户所在的部门
             organizationIds.add(organizationId);
+            
+            //用户的职位
             jobIds.add(jobId);
         }
         
         //默认分组 + 根据用户编号 和 组织编号 找 分组
+        //userId 或 organizationIds可以为null
         Set<Long> groupIds = groupService.findShowGroupIds(userId, organizationIds);
         
         //获取权限

@@ -57,6 +57,23 @@
         a.id = b.role_id 
     </select>
     
+    <select id="findShowRoles" resultMap="roleResultMap">
+        SELECT 
+        <include refid="roleColumns" />
+        FROM jbf.sys_role a left join sys_role_resource_permission b on 
+        a.id = b.role_id 
+        <trim prefix="where" suffixOverrides="and" >
+            <![CDATA[is_show = 1 and]]>
+            <if test="roleIds != null and roleIds.siez() > 0">
+                a.id in 
+                <foreach collection="roleIds" item="roleId" 
+                    open="(" separator="," close=")">
+                    #{roleId}
+                </foreach>
+            </if>
+        </trim>
+    </select>
+    
     <insert id="insert">
         INSERT INTO sys_role
         <trim prefix="(" suffix=")" suffixOverrides="," >

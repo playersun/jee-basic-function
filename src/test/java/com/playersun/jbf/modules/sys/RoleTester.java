@@ -7,10 +7,12 @@ package com.playersun.jbf.modules.sys;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.common.collect.Sets;
 import com.playersun.jbf.common.BaseTest;
 import com.playersun.jbf.common.persistence.pagination.Pageable;
 import com.playersun.jbf.modules.sys.entity.Role;
@@ -88,5 +90,14 @@ public class RoleTester extends BaseTest {
         Role role = roleService.findById(1L);
         role.setRemarks("test update once again");
         System.out.println(roleService.update(role));
+    }
+    
+    @Test
+    public void testFindIn(){
+        Set<Long> set = Sets.newHashSet();
+        set.add(1L);
+        set.add(2L);
+        
+        List<Role> setRole = roleService.findShowRoles(set);
     }
 }

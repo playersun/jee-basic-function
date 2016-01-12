@@ -7,13 +7,13 @@
         a.create_by, a.create_date,
         a.update_by, a.update_date,
         a.remarks, a.deleted,
-        b.id, b.username, b.password,
+        b.id u_id, b.username, b.password,
         b.salt, b.name,
         b.work_number, b.gender, b.birthday, b.email,
         b.mobile, b.photo,
-        b.create_by, b.create_date, b.update_by,
-        b.update_date,
-        b.remarks, b.deleted,
+        b.create_by u_create_by, b.create_date u_create_date, b.update_by u_update_by,
+        b.update_date u_update_date,
+        b.remarks u_remarks, b.deleted u_deleted,
         b.status
     </sql>
 
@@ -33,8 +33,34 @@
             jdbcType="DATE" />
         <result column="remarks" property="remarks" jdbcType="VARCHAR" />
         <result column="deleted" property="deleted" jdbcType="BIT" />
-        <association property="user"
-            resultMap="com.playersun.jbf.modules.sys.dao.UserDao.userResultMap" />
+        <!-- <association property="user"
+            resultMap="com.playersun.jbf.modules.sys.dao.UserDao.userResultMap" /> -->
+        <association property="user" javaType="com.playersun.jbf.modules.sys.entity.User">
+            <id column="u_id" property="id" jdbcType="BIGINT" />
+            <result column="username" property="username" jdbcType="VARCHAR" />
+            <result column="password" property="password" jdbcType="VARCHAR" />
+            <result column="salt" property="salt" jdbcType="VARCHAR" />
+            <result column="name" property="name" jdbcType="VARCHAR" />
+            <result column="work_number" property="workNumber"
+                jdbcType="VARCHAR" />
+            <result column="gender" property="gender"
+                typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+            <result column="birthday" property="birthday" jdbcType="DATE" />
+            <result column="email" property="email" jdbcType="VARCHAR" />
+            <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+            <result column="photo" property="photo" jdbcType="VARCHAR" />
+            <result column="status" property="status"
+                typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+    
+            <result column="u_create_by" property="createBy" jdbcType="BIGINT" />
+            <result column="u_create_date" property="createDate"
+                jdbcType="DATE" />
+            <result column="u_update_by" property="updateBy" jdbcType="BIGINT" />
+            <result column="u_update_date" property="updateDate"
+                jdbcType="DATE" />
+            <result column="u_remarks" property="remarks" jdbcType="VARCHAR" />
+            <result column="u_deleted" property="deleted" jdbcType="BIT" />
+        </association>
     </resultMap>
 
     <select id="findList" resultMap="userOrganizationJobResultMap">

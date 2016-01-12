@@ -5,8 +5,8 @@
  */
 package com.playersun.jbf.modules.sys.service;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -25,7 +25,7 @@ public class RoleService extends CrudService<Role> {
         return (RoleDao) crudDao;
     }
     
-    public List<Role> findShowRoles(Set<Long> roleIds){
+    public List<Role> findShowRoles(Collection<Long> roleIds){
         return getRoleDao().findShowRoles( roleIds);
     }
 }

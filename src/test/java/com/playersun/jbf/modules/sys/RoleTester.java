@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.ibatis.annotations.Param;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -99,5 +100,7 @@ public class RoleTester extends BaseTest {
         set.add(2L);
         
         List<Role> setRole = roleService.findShowRoles(set);
+        
+        System.out.println(setRole);
     }
 }

@@ -38,7 +38,7 @@ public class UserOrganizationJobTester extends BaseTest {
     
     @Test
     public void findUOJWithSearchable(){
-        Searchable searchable = new SearchRequest();
+        Searchable searchable = new SearchRequest().addSearchParam("deleted", "0");
         userOrganizationJobService.findList(searchable);
     }
 }

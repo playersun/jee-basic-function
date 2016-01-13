@@ -9,6 +9,7 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,6 +55,14 @@ public class SearchRequest implements Searchable {
     public SearchRequest() {
         this(null, null, null);
     }
+    
+    /**
+     * @param searchParams
+     * @see SearchRequest#SearchRequest(java.util.Map<java.lang.String,java.lang.Object>, Pageable, sort)
+     
+    public SearchRequest(String key, Object value) {
+        Map<String, Object> map = new HashMap<String, Object>();
+    }*/
     
     /**
      * @param searchParams

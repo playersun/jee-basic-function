@@ -5,11 +5,13 @@
  */
 package com.playersun.jbf.modules.sys.service;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.playersun.jbf.modules.sys.entity.Role;
 import com.playersun.jbf.modules.sys.entity.User;
@@ -53,9 +55,9 @@ public class UserAuthService {
      * @param user
      * @return
      */
-    public Set<Role> findRoles(User user) {
+    public List<Role> findRoles(User user) {
         if (user == null) {
-            return Sets.newHashSet();
+            return Lists.newArrayList();
         }
         
         Set<Long[]> organizationJobIds = Sets.newHashSet();
@@ -94,9 +96,9 @@ public class UserAuthService {
         Set<Long> roleIds = authService.findRoleIds(userId, groupIds,
                 organizationIds, jobIds, organizationJobIds);
         
-        /*Set<Role> roles = roleService.findShowRoles(roleIds);*/
+        List<Role> roles = roleService.findShowRoles(roleIds);
         
-        return null;
+        return roles;
     }
     
     public Set<String> findStringRoles(User user) {

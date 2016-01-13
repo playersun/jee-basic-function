@@ -44,7 +44,7 @@
         FROM sys_group a
     </select>
     
-    <select id="findDefaultGroupIds">
+    <select id="findDefaultGroupIds" resultType="java.lang.Long">
         SELECT id FROM sys_group WHERE default_group=1 and is_show=1
     </select>
 

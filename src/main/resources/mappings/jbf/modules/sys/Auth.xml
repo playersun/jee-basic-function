@@ -47,41 +47,46 @@
         <include refid="authColumns" />
         FROM sys_auth a
     </select>
-    
+
     <select id="findRoleIds">
         SELECT role_ids FROM sys_auth WHERE user_id = #{userId}
         <trim prefix="(" suffix=")" prefixOverrides="or">
             <if test="groupIds != null and groupIds.size() > 0">
-                OR group_id in
-                <foreach collection="groupIds" item="groupId" 
+                OR (group_id in
+                <foreach collection="groupIds" item="groupId"
                     open="(" separator="," close=")">
                     #{groupId}
                 </foreach>
+                )
             </if>
-            
+
             <if test="organizationIds != null and organizationIds.size() > 0">
-                OR organization_id in
-                <foreach collection="organizationIds" item="organizationId" 
+                OR (organization_id in
+                <foreach collection="organizationIds" item="organizationId"
                     open="(" separator="," close=")">
                     #{organizationId}
                 </foreach>
+                and job_id = 0)
             </if>
-            
+
             <if test="jobIds != null and jobIds.size() > 0">
-                OR job_id in
-                <foreach collection="jobIds" item="jobId" 
-                    open="(" separator="," close=")">
+                OR (organizationId=0 and job_id in
+                <foreach collection="jobIds" item="jobId" open="("
+                    separator="," close=")">
                     #{jobId}
                 </foreach>
+                )
             </if>
-            
-            <if test="organizationJobIds != null and organizationJobIds.size() > 0">
-                <trim prefix="(" suffix=")" prefixOverrides="or">
-                    <foreach collection="organizationJobIds" item="organizationJobId" 
-                        open="(" separator="," close=")">
-                        #{jobId}
-                    </foreach>
-                </trim>
+
+            <if
+                test="organizationJobIds != null and organizationJobIds.size() > 0">
+                <foreach collection="organizationJobIds" item="organizationJobId">
+                    <trim prefixOverrides="or">
+                        or (organization_id =
+                        #{organizationJobId[0]} and jobId =
+                        #{organizationJobId[1]})
+                    </trim>
+                </foreach>
             </if>
         </trim>
     </select>
@@ -216,26 +221,28 @@
             id = #{id}
         </where>
     </update>
-    
+
     <sql id="deleteSql">
-        update sys_auth set deleted = 1 where deleted = 0 and id = #{id}
+        update sys_auth set deleted = 1 where deleted = 0 and id
+        = #{id}
     </sql>
-    
+
     <update id="delete">
         <include refid="deleteSql" />
     </update>
-    
+
     <update id="deleteById">
         <include refid="deleteSql" />
     </update>
-    
+
     <update id="deleteBatch" parameterType="java.util.List">
         update sys_auth set deleted = 1 where id in
-        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+        <foreach collection="list" item="item" index="index"
+            open="(" separator="," close=")">
             #{item.id}
         </foreach>
     </update>
-    
+
     <update id="deletaAll">
         update sys_auth set deleted = 1 where 1=1
     </update>

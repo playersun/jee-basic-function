@@ -69,7 +69,7 @@ public class GroupRelationTest extends BaseTest {
         Set<Long> set = Sets.newHashSet();
         set.add(1L);
         set.add(2L);
-        Set<Long> groupIds = groupRelationService.findGroupIds(1L, set);
+        List<Long> groupIds = groupRelationService.findGroupIds(1L, set);
         System.out.println(groupIds);
     }
     
